@@ -19,6 +19,7 @@ mas_notas.addEventListener("click", function() {
     checkbox.type = "checkbox";
     
     let boton = document.createElement("button")
+    boton.textContent = "kdkñdld"
 
     let selector_colores = document.createElement("input");
     selector_colores.type = "color";
