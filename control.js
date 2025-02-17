@@ -18,7 +18,6 @@ mas_notas.addEventListener("click", function() {
     checkbox.type = "checkbox";
     
     let boton = document.createElement("button")
-    boton.textContent = array_notas[numero_nota][3]
 
     let selector_colores = document.createElement("input");
     selector_colores.type = "color";
