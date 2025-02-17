@@ -1,0 +1,35 @@
+.erik{
+    width: auto;
+    height: 8mm;
+    background-color: white;
+    border-radius: 30px;
+    border-color: yellow;
+}
+#mas_notas{
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+}
+#contenido{
+    height: 7mm;
+    width: 70mm;
+}
+#ordenar{
+    border-radius: 0px;
+}
+#cambio_color{
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+    border-width: 2px;
+}
+#creacion_notas{
+    border-radius: 3px;
+    border-color: black;
+    border-style: dashed;
+}
+#color_change{
+    width: 10px;
+    height: 8mm;
+    background-color: white;
+    border-radius: 30px;
+    border-color: yellow;
+}
