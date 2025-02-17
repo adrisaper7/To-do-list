@@ -11,9 +11,10 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
 let array_notas = [EJEMPLO_NOTA]
 let numero_nota = 1;
 let mas_notas = document.getElementById("mas_notas")
+let contenedor_notas = document.getElementById("contenedor_notas")
 
 mas_notas.addEventListener("click", function() {
-
+    console.log("hola")
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     
@@ -23,9 +24,12 @@ mas_notas.addEventListener("click", function() {
     selector_colores.type = "color";
 
     let div_notas = document.createElement("div")
+    
 
     div_notas.appendChild(checkbox)
     div_notas.appendChild(boton);
     div_notas.appendChild(selector_colores)
+
+    contenedor_notas.appendChild(div_notas)
     
 });
