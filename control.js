@@ -8,8 +8,16 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
     return array_notas
 }
 
+function guardar_en_local(array_notas){
+    
+}
+
 let array_notas = [EJEMPLO_NOTA]
 let numero_nota = 1;
+
+
+
+
 
 //Coger variables del documento
 let mas_notas = document.getElementById("mas_notas")
