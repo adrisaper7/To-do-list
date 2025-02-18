@@ -27,9 +27,9 @@
     border-style: dashed;
 }
 #color_change{
-    width: 15mm;
-    height: 7mm;
-    background-color: white;
     border-radius: 30px;
     border-color: yellow;
+}
+h1{
+    color: saddlebrown;
 }
