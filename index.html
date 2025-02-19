@@ -14,10 +14,20 @@
             <input id="contenido" class="erik"type="text" placeholder="Escribe tus notas" style="font-family: Comic Sans MS, cursive, sans-serif;"></input>
             <button id="ordenar" class="erik">ordenar</button>
             <input id="color_change" type="color"></input>
+            <button id="editar" class="erik">editar</button>
         </div>
         <div id="contenedor_notas" style="display: flex; align-items: center; justify-content: center; flex-direction: column;" ></div>
 
         </div>
+        <div class="menu-container">
+            <button onclick="toggleMenu()">☰ Menú</button>
+            <div class="menu" id="popupMenu">
+                <a href="#">Opción 1</a>
+                <a href="#">Opción 2</a>
+                <a href="#">Opción 3</a>
+            </div>
+        </div>
         <script src="control.js" ></script>
+
     </body>
 </html>
