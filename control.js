@@ -196,6 +196,49 @@ function mostrar_de_array(array_notas){
             boton.style.color = "#333"; // Color de texto más oscuro
             boton.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
 
+            boton.addEventListener("dblclick", function() {
+                let input_edicion = document.createElement("input");
+                input_edicion.type = "text";
+                input_edicion.value = boton.textContent;
+                input_edicion.style.width = "auto";
+                input_edicion.style.maxWidth = "330px";
+                input_edicion.style.height = "30px";
+                input_edicion.style.fontSize = "14px";
+                input_edicion.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
+                input_edicion.style.border = "1px solid #ccc";
+                input_edicion.style.borderRadius = "5px";
+                input_edicion.style.padding = "5px";
+                
+                // Reemplazar el botón con el input
+                div_notas.replaceChild(input_edicion, boton);
+                input_edicion.focus();
+            
+                // Guardar cambios cuando el usuario presione Enter o salga del input
+                function guardarCambios() {
+                    let nuevo_texto = input_edicion.value.trim();
+                    if (nuevo_texto !== "") {
+                        boton.textContent = nuevo_texto;
+                        
+                        // Buscar la nota en el array y actualizarla
+                        let nota_id = parseInt(div_notas.id.replace("Nota", ""));
+                        let nota_actual = array_notas.find(nota => nota[0] === nota_id);
+                        if (nota_actual) {
+                            nota_actual[2] = nuevo_texto; // Actualiza el título en array_notas
+                        }
+                        input_edicion.removeEventListener("blur", guardarCambios);
+                        div_notas.replaceChild(boton, input_edicion); // Restaurar el botón
+                        console.log("Notas actualizadas:", array_notas);
+                    }
+                }
+            
+                input_edicion.addEventListener("blur", guardarCambios);
+                input_edicion.addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        guardarCambios();
+                    }
+                });
+            });
+
             let selector_colores = document.createElement("input"); //Crear input color
             selector_colores.type = "color";
             selector_colores.value = color_contenido;
