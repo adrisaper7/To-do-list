@@ -10,12 +10,16 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
 
 function guardar_en_local(array_notas){
     let numero_nota = 0;
+    console.log(array_notas)
     for (let nota of array_notas){
         let texto = ""
         let numero = 0;
         for(let contenido of nota){
             console.log(contenido)
-            if (numero == nota.length-1){
+            if (contenido == 0){
+                texto+= "0$/$"
+            }
+            else if (numero == nota.length-1){
             texto += contenido.toString()    
             }
             else if (contenido == ""){
