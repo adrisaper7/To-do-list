@@ -4,6 +4,9 @@
     background-color: white;
     border-radius: 30px;
     border-color: yellow;
+    font-weight: bold;
+    color: #333;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 #mas_notas{
     border-top-right-radius: 0%;
@@ -12,6 +15,7 @@
 #contenido{
     height: 7mm;
     width: 70mm;
+    border-width: 1mm;
 }
 #ordenar{
     border-radius: 0px;
@@ -27,9 +31,14 @@
     border-style: dashed;
 }
 #color_change{
-    width: 10px;
-    height: 8mm;
+    width: 34px;
+    height: 34px;
     background-color: white;
     border-radius: 30px;
     border-color: yellow;
+}
+h1{
+    font-weight: bold;
+    color: #333;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
