@@ -8,6 +8,7 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
     return array_notas
 }
 
+
 function guardar_en_local(array_notas){
     let numero_nota = 0;
     console.log(array_notas)
@@ -42,11 +43,8 @@ function ordenar_array(array){
     let array_ordenat = []
     for(let i = array.length-1; i >= 0; i--){
         for (let j = 0; j < array.length; j++){
-            console.log(i.toString())
-            console.log(array[j][1])
             if(i.toString() == array[j][0]){
                 array_ordenat.push(array[j])
-                console.log(array[j])
             }
         }
     }
@@ -73,7 +71,6 @@ function mostrar_de_array(array_notas){
     //Coger valor de los inputs
     for(nota of array_notas){
         let titulo_contenido = nota[2];
-        let clase_contenido = nota[4];
         let color_contenido = nota[5];
 
         if (titulo_contenido != ""){ 
@@ -92,7 +89,7 @@ function mostrar_de_array(array_notas){
             boton.style.maxWidth = "330px";
             boton.style.height = "34px";
             boton.style.border = "none";
-            boton.style.backgroundColor = "#ffcc80"; // Color cálido para el botón
+            boton.style.backgroundColor = color_contenido; // Color cálido para el botón
             boton.style.cursor = "pointer";
             boton.style.borderRadius = "5px"; // Bordes redondeados
             boton.style.boxShadow = "1px 1px 3px rgba(0,0,0,0.2)"; // Sombra ligera
@@ -109,20 +106,21 @@ function mostrar_de_array(array_notas){
             selector_colores.style.padding = "0";
             selector_colores.style.cursor = "pointer";
             selector_colores.style.marginLeft = "10px";
-            selector_colores.style.backgroundColor = "#ffcc80";// Espacio entre el botón y el selector
+            selector_colores.style.backgroundColor = color_contenido;
+            selector_colores.id = "Color"+ numero_nota;
 
             let div_notas = document.createElement("div"); //crear div de cada nota
             div_notas.style.display = "flex";
             div_notas.style.alignItems = "center"; // Alinear verticalmente
             div_notas.style.justifyContent = "space-between"; // Espacio entre elementos
-            div_notas.style.backgroundColor = "#ffcc80"; // Color amarillo claro
+            div_notas.style.backgroundColor = color_contenido; // Color amarillo claro
             div_notas.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.2)"; // Sombra para efecto elevado
             div_notas.style.width = "400px";
             div_notas.style.padding = "5px";
             div_notas.style.margin = "2px"; // Espaciado interno
             div_notas.style.borderRadius = "10px"; // Bordes más suaves
             div_notas.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
-            div_notas.style.borderLeft = "5px solid #ffcc80"; // Línea decorativa en el lado izquierdo
+            div_notas.style.borderLeft = color_contenido
 
             // Agregar elementos a la nota
             div_notas.appendChild(checkbox);
@@ -158,7 +156,6 @@ let clase = document.getElementById("ordenar")
 let color = document.getElementById("color_change")
 
 mas_notas.addEventListener("click", function() { 
-    console.log("hola");
 
 
     //Coger valor de los inputs
@@ -183,5 +180,23 @@ mas_notas.addEventListener("click", function() {
 
     }
 
+
+});
+
+const inputsDeColor = document.querySelectorAll('input[type="color"]')
+
+inputsDeColor.forEach((id) => {
+    id.addEventListener('input', (event) => { 
+        let numero_del_div = id.id.replace("Color", "");
+        console.log(numero_del_div)
+            for (nota of array_notas){
+                if (nota[0] == numero_del_div){
+                    let color_contenido = event.target.value;
+                    nota[5] =  color_contenido
+                }
+            }
+        mostrar_de_array(array_notas)
+
+    });
 
 });
