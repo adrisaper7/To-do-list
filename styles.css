@@ -21,6 +21,10 @@ menu{
     color: #333;
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
+
+.ordenar{
+    cursor: pointer;
+}
 #mas_notas{
     border-top-right-radius: 0%;
     border-bottom-right-radius: 0%;
