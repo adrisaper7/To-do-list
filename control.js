@@ -183,6 +183,7 @@ function mostrar_de_array(array_notas){
             boton.style.fontWeight = "bold";
             boton.style.color = "#333"; // Color de texto más oscuro
             boton.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
+            boton.style.flex = "flex-flow: wrap-reverse";
 
             boton.addEventListener("dblclick", function() {
                 let input_edicion = document.createElement("input");
@@ -238,6 +239,7 @@ function mostrar_de_array(array_notas){
             selector_colores.style.marginLeft = "10px";
             selector_colores.style.backgroundColor = color_contenido;
             selector_colores.id = "Color"+ numero_nota;
+
 
             let boton_eliminar = document.createElement("button");
             boton_eliminar.textContent = "X";
