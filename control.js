@@ -269,6 +269,17 @@ function mostrar_de_array(array_notas){
             selector_colores.style.marginLeft = "10px";
             selector_colores.style.backgroundColor = "#ffcc80";// Espacio entre el botón y el selector
 
+            let boton_eliminar = document.createElement("button");
+            boton_eliminar.textContent = "X";
+            boton_eliminar.style.marginLeft = "1px";
+            boton_eliminar.style.border = "none";
+            boton_eliminar.style.backgroundColor = "#ff4d4d"; // Rojo
+            boton_eliminar.style.color = "white";
+            boton_eliminar.style.cursor = "pointer";
+            boton_eliminar.style.padding = "5px 10px";
+            boton_eliminar.style.borderRadius = "5px";
+            boton_eliminar.style.fontSize = "14px";
+
             let div_notas = document.createElement("div"); //crear div de cada nota
             div_notas.style.display = "flex";
             div_notas.style.alignItems = "center"; // Alinear verticalmente
@@ -286,6 +297,7 @@ function mostrar_de_array(array_notas){
             div_notas.appendChild(checkbox);
             div_notas.appendChild(boton);
             div_notas.appendChild(selector_colores);
+            div_notas.appendChild(boton_eliminar);
 
             // Verificar si existe el contenedor de notas o crearlo
             let contenedor_notas = document.getElementById("contenedor_notas");
