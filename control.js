@@ -75,6 +75,7 @@ function mostrar_de_array(array_notas){
         if (titulo_contenido != ""){ 
             let checkbox = document.createElement("input"); //Crear checkbox
             checkbox.type = "checkbox";
+            checkbox.className = "finalizado?";
             checkbox.style.width = "18px";
             checkbox.style.height = "18px";
             checkbox.style.marginRight = "10px"; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
