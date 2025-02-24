@@ -1,6 +1,20 @@
 
 const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
+const observer = new MutationObserver(actualizarInputsDeColor);
 
+function actualizarInputsDeColor() {
+    const inputs_de_color = document.querySelectorAll('input[type="color"]');
+    console.log(inputs_de_color); // Muestra los inputs de color actualizados
+}
+
+// Inicializa MutationObserver para observar cambios en el DOM
+
+
+// Observa el body para cambios en los hijos (cuando se agregan o eliminan inputs)
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
 
 function crear_nota(numero_nota, titulo, clase, color, array_notas){
     let nueva_nota = [numero_nota, false, titulo, "", clase, color, Date.now(), ""]
@@ -161,7 +175,7 @@ function mostrar_de_array(array_notas){
             boton.style.maxWidth = "330px";
             boton.style.height = "34px";
             boton.style.border = "none";
-            boton.style.backgroundColor = color_contenido; // Color cálido para el botón
+            boton.style.backgroundColor = "white"; // Color cálido para el botón
             boton.style.cursor = "pointer";
             boton.style.borderRadius = "5px"; // Bordes redondeados
             boton.style.boxShadow = "1px 1px 3px rgba(0,0,0,0.2)"; // Sombra ligera
@@ -259,8 +273,10 @@ function mostrar_de_array(array_notas){
             div_notas.id = "Nota"+numero_nota;
             contenedor_notas.appendChild(div_notas);
             numero_nota++;
+            inputs_de_color = document.querySelectorAll('input[type="color"]')
         }
     }
+    addArrayListener();
 }
 
 
@@ -301,6 +317,8 @@ mas_notas.addEventListener("click", function() {
         guardar_en_local(array_notas)
 
         mostrar_de_array(array_notas)
+        
+    
     }
     else{
         alert("Titulo de la nota sin contenido");
@@ -310,3 +328,19 @@ mas_notas.addEventListener("click", function() {
 
 });
 
+
+function addArrayListener() {
+    inputs_de_color.forEach((input) => {
+        input.addEventListener('change', (event) => {
+            if(input.id == "color_change"){}
+            else{      
+                let color = event.target.value;
+                let numero_del_div = input.id.replace("Color", "");
+                array_notas[parseInt(numero_del_div)][5] = color;
+                guardar_en_local(array_notas)
+                mostrar_de_array(array_notas)
+            }
+
+        });
+    });
+}
