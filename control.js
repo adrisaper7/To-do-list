@@ -8,11 +8,28 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
     return array_notas
 }
 
+
+function ordenarTarjetas() {
+    let idOrdenar = document.getElementById("ordenar");
+    
+
+
+    if(idOrdenar.textContent === "ordenar por fecha"){
+        idOrdenar.textContent = "ordenar por otra cosa";
+
+    }
+    else{
+        idOrdenar.textContent = "ordenar por fecha";
+    }
+}
+
+document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
+
 //Obtener fecha actual
 function crearFechaYhora(){
     const ahora = new Date();
     const año = ahora.getFullYear();
-    const mes = String(ahora.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const mes = String(ahora.getMonth() + 1).padStart(2, '0'); 
     const meses = Number(mes);
     const dia = String(ahora.getDate()).padStart(2, '0');
     const dias = Number(dia);
@@ -177,6 +194,8 @@ function mostrar_de_array(array_notas){
              
         
                 checkbox.addEventListener("click", CalcularTiempo);
+
+                
         
 
             let boton = document.createElement("button"); //Crear boton
