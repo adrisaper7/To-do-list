@@ -224,6 +224,7 @@ function mostrar_de_array(array_notas){
             selector_colores.style.backgroundColor = color_contenido;
             selector_colores.id = "Color"+ numero_nota;
 
+
             let boton_eliminar = document.createElement("button");
             boton_eliminar.textContent = "X";
             boton_eliminar.style.marginLeft = "1px";
