@@ -92,7 +92,8 @@ function mostrar_de_array(array_notas){
             checkbox.className = "finalizado?";
             checkbox.style.width = "18px";
             checkbox.style.height = "18px";
-            checkbox.style.marginRight = "10px"; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
+            checkbox.style.marginRight = "10px";
+            checkbox.id = "Checkbox"+ numero_nota; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
 
     
             let fechaYhoraCreacion = crearFechaYhora();
