@@ -11,12 +11,10 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
 
 function guardar_en_local(array_notas){
     let numero_nota = 0;
-    console.log(array_notas)
     for (let nota of array_notas){
         let texto = ""
         let numero = 0;
         for(let contenido of nota){
-            console.log(contenido)
             if (contenido == 0){
                 texto+= "0$/$"
             }
@@ -185,17 +183,27 @@ mas_notas.addEventListener("click", function() {
 
 const inputsDeColor = document.querySelectorAll('input[type="color"]')
 
+
 inputsDeColor.forEach((id) => {
+    let numero_del_div = id.id.replace("Color", "");
     id.addEventListener('input', (event) => { 
-        let numero_del_div = id.id.replace("Color", "");
+        numero_del_div = event.target.id.replace("Color", "");
         console.log(numero_del_div)
             for (nota of array_notas){
+                console.log(nota[0])
+                console.log( numero_del_div)
                 if (nota[0] == numero_del_div){
                     let color_contenido = event.target.value;
-                    nota[5] =  color_contenido
+                    console.log(color_contenido)
+                    nota[5] =  color_contenido;
+                    console.log(nota[5])
+                    console.log(array_notas)
+                    guardar_en_local(array_notas)
+                    mostrar_de_array(array_notas)
+                    
                 }
             }
-        mostrar_de_array(array_notas)
+       
 
     });
 
