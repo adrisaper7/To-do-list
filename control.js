@@ -171,10 +171,10 @@ function mostrar_de_array(array_notas){
             boton.textContent = titulo_contenido;
             boton.style.overflow = "hidden";
             boton.style.textOverflow = "ellipsis";
-            boton.style.whiteSpace = "nowrap";
+            boton.style.whiteSpace = "pre-wrap";
             boton.style.width = "auto";
-            boton.style.maxWidth = "330px";
-            boton.style.height = "34px";
+            boton.style.maxWidth = "280px";
+            boton.style.height = "auto";
             boton.style.border = "none";
             boton.style.backgroundColor = "white"; // Color cálido para el botón
             boton.style.cursor = "pointer";
@@ -183,14 +183,13 @@ function mostrar_de_array(array_notas){
             boton.style.fontWeight = "bold";
             boton.style.color = "#333"; // Color de texto más oscuro
             boton.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
-            boton.style.flex = "flex-flow: wrap-reverse";
+            boton.style.wordWrap = "break-word";
 
             boton.addEventListener("dblclick", function() {
                 let input_edicion = document.createElement("input");
                 input_edicion.type = "text";
                 input_edicion.value = boton.textContent;
                 input_edicion.style.width = "auto";
-                input_edicion.style.maxWidth = "330px";
                 input_edicion.style.height = "30px";
                 input_edicion.style.fontSize = "14px";
                 input_edicion.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
