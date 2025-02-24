@@ -168,6 +168,7 @@ function mostrar_de_array(array_notas){
             boton.style.fontWeight = "bold";
             boton.style.color = "#333"; // Color de texto más oscuro
             boton.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
+            boton.style.flex = "flex-flow: wrap-reverse";
 
             boton.addEventListener("dblclick", function() {
                 let input_edicion = document.createElement("input");
