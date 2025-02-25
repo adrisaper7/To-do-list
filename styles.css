@@ -1,3 +1,8 @@
+p{
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 10px;
+}
+
 .mike{
     background-color: bisque;
     padding: 1px;
@@ -195,3 +200,32 @@ h1{
     transform: scale(0.98); /* Efecto de presionar el botón */
 }
 
+
+.cambiar_color {
+    position: absolute;
+    right: 90px;    
+    top: 18px;
+    height: 25px;
+    width: 25px;
+    background-color: red; /* Color de fondo */
+    border: 2px solid black; /* Borde negro */
+    border-radius: 50%; /* Bordes redondeados para hacerlo circular */
+    padding: 0;
+    margin: 0; /* Aseguramos que no haya márgenes extra */
+    box-sizing: border-box; /* Incluye el borde en el tamaño total del elemento */
+}   
+
+
+.fechacompletaciontarea{
+    position: absolute;
+    bottom: -5px;
+    right: 10px;
+
+}
+
+.fechacreaciontarea{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    
+}

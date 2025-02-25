@@ -326,6 +326,14 @@ function abrir_menu(button_id){
     cambiar_color.className = "cambiar_color";
 
 
+    let fechacreaciontarea = document.createElement("p")
+    fechacreaciontarea.textContent = "Fecha de creación de la tarea: 12/12/2021 12:12:12"
+    fechacreaciontarea.className = "fechacreaciontarea"
+
+    let fechacompletaciontarea = document.createElement("p")
+    fechacompletaciontarea.textContent = "Fecha de completación de la tarea : 12/12/2021 12:12:12"
+    fechacompletaciontarea.className = "fechacompletaciontarea"
+
 
     document.body.appendChild(div_menu);
     div_menu.appendChild(boton_cerrar);
@@ -334,6 +342,8 @@ function abrir_menu(button_id){
     div_menu.appendChild(checkbox);
     div_menu.appendChild(boton_guardar_cambios);
     div_menu.appendChild(cambiar_color);
+    div_menu.appendChild(fechacreaciontarea);
+    div_menu.appendChild(fechacompletaciontarea);
     
 }
 
