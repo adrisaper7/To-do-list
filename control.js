@@ -1,29 +1,6 @@
 
-const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
+const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "fecha", "Hora completada"]
 
-
-function crear_nota(numero_nota, titulo, clase, color, array_notas){
-    let nueva_nota = [numero_nota, false, titulo, "", clase, color, Date.now(), ""]
-    array_notas.unshift(nueva_nota)
-    return array_notas
-}
-
-
-function ordenarTarjetas() {
-    let idOrdenar = document.getElementById("ordenar");
-    
-
-
-    if(idOrdenar.textContent === "ordenar por fecha"){
-        idOrdenar.textContent = "ordenar por otra cosa";
-
-    }
-    else{
-        idOrdenar.textContent = "ordenar por fecha";
-    }
-}
-
-document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
 
 //Obtener fecha actual
 function crearFechaYhora(){
@@ -40,6 +17,7 @@ function crearFechaYhora(){
     const segundo = String(ahora.getSeconds()).padStart(2, '0');
     const segundos = Number(segundo);
     return {
+        ahora: ahora,
         dias: dias,
         meses: meses,
         año: año,
@@ -49,14 +27,47 @@ function crearFechaYhora(){
     }
 }
 
+function crear_nota(numero_nota, titulo, clase, color, fechaCreada, array_notas){
+    let nueva_nota = [numero_nota, false, titulo, "", clase, color, fechaCreada, ""]
+    array_notas.unshift(nueva_nota)
+    return array_notas
+}
+
+
+/*function ordenarTarjetas(array_notas, checkbox) {
+    let idOrdenar = document.getElementById("ordenar");
+    
+    if(idOrdenar.textContent === "Ordenar tareas mas nuevas"){
+        idOrdenar.textContent = "Ordenar tareas mas antiguas";
+        return array_notas.sort((a,b) => new Date(a.checkbox.ahora) - new Date(b.checkbox.ahora));
+    }
+    else if(idOrdenar.textContent === "Ordenar tareas mas antiguas"){
+        idOrdenar.textContent = "Ordenar tareas completadas";
+        return array_notas.sort((a,b) => b.checkbox.ahora - a.checkbox.ahora);
+    }
+    else {
+        idOrdenar.textContent = "Ordenar tareas mas nuevas";
+    }
+}
+*/
+
+
+
+
 function guardar_en_local(array_notas){
     let numero_nota = 0;
-    console.log(array_notas)
+    //console.log(array_notas)
+
     for (let nota of array_notas){
         let texto = ""
         let numero = 0;
         for(let contenido of nota){
             console.log(contenido)
+
+            if (typeof contenido === 'object' && contenido !== null) {
+                // Convertir el objeto a una cadena de texto JSON
+                contenido = JSON.stringify(contenido);
+            }
             if (contenido == 0){
                 texto+= "0$/$"
             }
@@ -73,8 +84,8 @@ function guardar_en_local(array_notas){
             numero++
 
         }
-
-        localStorage.setItem(numero_nota, texto)
+        console.log(texto);
+        localStorage.setItem(numero_nota, JSON.stringify(texto))
         numero_nota++
     }
 }
@@ -83,11 +94,11 @@ function ordenar_array(array){
     let array_ordenat = []
     for(let i = array.length-1; i >= 0; i--){
         for (let j = 0; j < array.length; j++){
-            console.log(i.toString())
-            console.log(array[j][1])
+         //   console.log(i.toString())
+           // console.log(array[j][1])
             if(i.toString() == array[j][0]){
                 array_ordenat.push(array[j])
-                console.log(array[j])
+              //  console.log(array[j])
             }
         }
     }
@@ -96,10 +107,24 @@ function ordenar_array(array){
 
 function coger_de_local(){
     let array_actualitzado = []
+  
     for (let i = 0; i < localStorage.length; i++){
         let key = localStorage.key(i);
-        let value = localStorage.getItem(key);
-        let array_nota = value.split("$/$")
+        let value = JSON.parse(localStorage.getItem(key));
+        let array_nota = value.split("$/$");
+
+  
+        array_nota = array_nota.map(item => {
+            if (item.startsWith('{') && item.endsWith('}')) {
+                return JSON.parse(item);
+            } else if (item === "0") {
+                return 0;
+            } else if (item === "$/$") {
+                return "";
+            } else {
+                return item
+            }
+        });
         array_actualitzado.push(array_nota)
     }
     array_actualitzado = ordenar_array(array_actualitzado)
@@ -111,13 +136,16 @@ function coger_de_local(){
 function mostrar_de_array(array_notas){
     document.getElementById("contenedor_notas").innerHTML = "";
     let numero_nota = 0;
+
     //Coger valor de los inputs
     for(nota of array_notas){
         let titulo_contenido = nota[2];
         let clase_contenido = nota[4];
         let color_contenido = nota[5];
+    
 
         if (titulo_contenido != ""){ 
+            
             let checkbox = document.createElement("input"); //Crear checkbox
             checkbox.type = "checkbox";
             checkbox.className = "finalizado?";
@@ -126,26 +154,27 @@ function mostrar_de_array(array_notas){
             checkbox.style.marginRight = "10px"; // Espacio entre checkbox y botón
             checkbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
 
-    
-            let fechaYhoraCreacion = crearFechaYhora();
+            console.log(nota);
+
+            const fechaCreacion = nota.find(item => typeof item === 'object');
+            if (nota) {
+            const fechaCreada = fechaCreacion.ahora;
+            const añoC = fechaCreacion.año;
+            const mesC = fechaCreacion.meses;
+            const diaC = fechaCreacion.dias;
+
+            const horaC = fechaCreacion.horas;
+            const minutoC = fechaCreacion.minutos;
+            const segundosC = fechaCreacion.segundos;
+            
         
-            let diaC = fechaYhoraCreacion.dias;
-            let mesC = fechaYhoraCreacion.meses;
-            let añoC = fechaYhoraCreacion.año;
-        
-            let horasC = fechaYhoraCreacion.horas;
-            let minutosC = fechaYhoraCreacion.minutos;
-            let segundosC = fechaYhoraCreacion.segundos;
-        
-                checkbox.fechaYhoraCreada = fechaYhoraCreacion;
-        
-                console.log("Creado en "+ diaC + "/" + mesC + "/" + añoC + " " + horasC + ":" + minutosC + ":" + segundosC);
-        
+            console.log("Creado en "+ añoC + "/" + mesC + "/" + diaC + " " + horaC + ":" + minutoC + ":" + segundosC);
+            
                 function CalcularTiempo(){
                      //let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
                     console.log(checkbox.checked);
                       if(checkbox.checked){
-                          let fechaYhoraFinalizacion = crearFechaYhora();
+                          const fechaYhoraFinalizacion = crearFechaYhora();
         
                           let diaF = fechaYhoraFinalizacion.dias;
                           let mesF = fechaYhoraFinalizacion.meses;
@@ -156,20 +185,37 @@ function mostrar_de_array(array_notas){
                           let segundosF = fechaYhoraFinalizacion.segundos;
         
                           checkbox.fechaYhoraFinalizada = fechaYhoraFinalizacion;
-        
+                          console.log("Creado en "+ añoC + "/" + mesC + "/" + diaC + " " + horaC + ":" + minutoC + ":" + segundosC);
                           console.log("Finalizado en " + diaF + "/" + mesF + "/" + añoF + " " + horasF + ":" + minutosF + ":" + segundosF);
                           
                         let diasH = diaF - diaC;
                         let mesH = mesF - mesC;
                         let añoH = añoF - añoC;
         
-                        let horaH = horasF - horasC;
-                        let minutoH = minutosF - minutosC;
+                        let horaH = horasF - horaC;
+                     
+                        let minutoH = minutosF - minutoC;
+                    
                         let segundoH = segundosF - segundosC;
-        
+
+                        if (segundoH < 0) {
+                            segundoH += 60;
+                            minutoH -= 1;
+                        }
+                        if (minutoH < 0) {
+                            minutoH += 60;
+                            horaH -= 1;
+                        }
+                        if (horaH < 0) {
+                            horaH += 24;
+                            diasH -= 1;
+                        
+                    
+                        }
                         let TiempoRealizacionTarea = {diasH, mesH, añoH, horaH, minutoH, segundoH}
         
                         checkbox.TiempoRealizacionTarea = TiempoRealizacionTarea;
+                        
         
                         if(checkbox.TiempoRealizacionTarea.minutoH == 0){
                             console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
@@ -191,11 +237,11 @@ function mostrar_de_array(array_notas){
                           checkbox.fechaYhoraFinalizada = "";
                       }
                   }
-             
-        
+                }
                 checkbox.addEventListener("click", CalcularTiempo);
 
                 
+ //               document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
         
 
             let boton = document.createElement("button"); //Crear boton
@@ -300,7 +346,7 @@ function mostrar_de_array(array_notas){
 
 
 let array_notas = coger_de_local()
-console.log(array_notas)
+//console.log(array_notas)
 let numero_nota = array_notas.length;
 mostrar_de_array(array_notas)
 
@@ -314,6 +360,8 @@ let contenedor_notas = document.getElementById("contenedor_notas")
 let titulo = document.getElementById("contenido");
 let clase = document.getElementById("ordenar")
 let color = document.getElementById("color_change")
+let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
+
 
 mas_notas.addEventListener("click", function() { 
     console.log("hola");
@@ -324,15 +372,16 @@ mas_notas.addEventListener("click", function() {
     let titulo_contenido = titulo.value;
     let clase_contenido = clase.value;
     let color_contenido = color.value;
+    let fechaCreada = crearFechaYhora();
 
     if (titulo_contenido != ""){ 
         
 
-        let = crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, array_notas)
+        let = crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, fechaCreada, array_notas)
         numero_nota+= 1;
 
-
-        guardar_en_local(array_notas)
+        console.log(array_notas);
+        guardar_en_local(array_notas);
 
         mostrar_de_array(array_notas)
     }
