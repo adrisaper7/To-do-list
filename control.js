@@ -1,9 +1,10 @@
 
 const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
 const observer = new MutationObserver(actualizarInputsDeColor);
+let inputs_de_color = document.querySelectorAll('input[type="color"]');
 
 function actualizarInputsDeColor() {
-    const inputs_de_color = document.querySelectorAll('input[type="color"]');
+    inputs_de_color = document.querySelectorAll('input[type="color"]');
     console.log(inputs_de_color); // Muestra los inputs de color actualizados
 }
 
@@ -279,6 +280,7 @@ function mostrar_de_array(array_notas){
             inputs_de_color = document.querySelectorAll('input[type="color"]')
         }
     }
+    actualizarInputsDeColor();
     addArrayListener();
 }
 
@@ -333,6 +335,7 @@ mas_notas.addEventListener("click", function() {
 
 
 function addArrayListener() {
+    console.log(inputs_de_color)
     inputs_de_color.forEach((input) => {
         input.addEventListener('change', (event) => {
             if(input.id == "color_change"){}
