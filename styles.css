@@ -137,29 +137,30 @@ h1{
 
 
 .titulo_nota {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
+    margin: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7);
     font-size: 30px;
     font-family: "Comic Sans MS", cursive, sans-serif;
     text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    white-space: normal;
+    text-overflow: unset;
     overflow: hidden;
     max-width: 330px;
-    height: 34px;
-    top: 10px;                   
-    left: 10px; 
-    margin: 10px;
+    height: auto;
+    position: relative;
     cursor: text;
+    word-wrap: break-word;
+    resize: none;  /* Evita que el textarea cambie de tamaño */
 }
+
+
 
 .contenido_nota {
     margin: 10px;
     padding: 10px;
     border: 1px solid #000;
-    background-color: #f9f9f9;
+    background-color:  rgba(255, 255, 255, 0.7);
     font-size: 16px;
     font-family: "Comic Sans MS", cursive, sans-serif;
     line-height: 1.6;
@@ -183,7 +184,7 @@ h1{
     padding: 5px;
     left: 3px;
     top: 370px;
-    background-color: #000000; /* Color verde */
+    background-color: rgb(0, 0, 0, 0.5); /* Color verde */
     color: white;
     border: none;
     border-radius: 5px;
@@ -208,7 +209,7 @@ h1{
     height: 25px;
     width: 25px;
     background-color: red; /* Color de fondo */
-    border: 2px solid black; /* Borde negro */
+    border: rgba(255, 255, 255, 0.9); /* Borde negro */
     border-radius: 50%; /* Bordes redondeados para hacerlo circular */
     padding: 0;
     margin: 0; /* Aseguramos que no haya márgenes extra */
@@ -220,6 +221,7 @@ h1{
     position: absolute;
     bottom: -5px;
     right: 10px;
+    background: rgba(255, 255, 255, 0.7);
 
 }
 
@@ -227,5 +229,7 @@ h1{
     position: absolute;
     bottom: 10px;
     right: 10px;
+
+    background: rgba(255, 255, 255, 0.7);
     
 }

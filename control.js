@@ -1,5 +1,9 @@
 
 const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
+const EJEMPLO_NOTAS = [
+    [1, true, "Reunión de equipo", "Se discutieron las metas de la próxima semana y la asignación de tareas.", "Trabajo", "#0000FF", "2025-02-25 10:00", "2025-02-25 11:00"],
+    [2, false, "Estudio de Matemáticas", "Repasar la teoría de álgebra y resolver ejercicios prácticos.", "Estudio", "#008000", "2025-02-25 14:00", null]
+  ];
 const observer = new MutationObserver(actualizarInputsDeColor);
 let inputs_de_color = document.querySelectorAll('input[type="color"]');
 
@@ -293,23 +297,30 @@ function mostrar_de_array(array_notas){
     }
     actualizarInputsDeColor();
     addArrayListener();
+    addmenuListener();
 }
 
 
-function abrir_menu(button_id){
-    let div_menu = document.createElement("div"); //Creamos menu pop up
+function abrir_menu(nota_array){
+    let numero_nota = array_notas.indexOf(nota_array)   
+    let menu = document.getElementsByClassName("menu_pop_up")[0]
+    if(menu){
+        menu.remove()
+    }
+    else{let div_menu = document.createElement("div"); //Creamos menu pop up
     div_menu.classList.add("menu_pop_up");
+    div_menu.style.backgroundColor = nota_array[5]
 
     let boton_cerrar = document.createElement("button"); //Creamos boton de cerrar
     boton_cerrar.textContent = "✖";
     boton_cerrar.className = "boton_cerrar"
 
-    let titulo_nota = document.createElement("button")
-    titulo_nota.textContent = "Titulo notakdjfñaeijfñdjfñaoiejfiajñpajefoijae"
+    let titulo_nota = document.createElement("textarea")
+    titulo_nota.textContent = nota_array[2]
     titulo_nota.className = "titulo_nota"
 
     let contenido_nota = document.createElement("textarea");
-    contenido_nota.textContent = "contenido notaaseijfpoiajefjaoijfpaejoifjaefjaoieofiajsepifioaeoifjapjf9aejfaoefjperaoifjapesjfiasoifja"
+    contenido_nota.textContent = nota_array[3]
     contenido_nota.className = "contenido_nota";
 
     let checkbox = document.createElement("input"); //Crear checkbox
@@ -322,7 +333,8 @@ function abrir_menu(button_id){
 
     let cambiar_color = document.createElement("input");
     cambiar_color.type = "color";
-    cambiar_color.value = "#ff0000";
+    cambiar_color.value =  nota_array[5];
+    cambiar_color.style.backgroundColor =  nota_array[5];
     cambiar_color.className = "cambiar_color";
 
 
@@ -344,10 +356,40 @@ function abrir_menu(button_id){
     div_menu.appendChild(cambiar_color);
     div_menu.appendChild(fechacreaciontarea);
     div_menu.appendChild(fechacompletaciontarea);
+
+    boton_cerrar.addEventListener("click", function() {
+        abrir_menu()
+    })
+
+    let titulo = document.querySelector(".titulo_nota");
+    let maxLength = 40;
     
+    if (titulo) {
+        titulo.setAttribute("contenteditable", "true");
+        titulo.style.border = "1px solid #ccc";
+    
+        
+        titulo.addEventListener("input", function () {
+            let text = titulo.innerText; 
+            if (text.length > maxLength) {
+                titulo.innerText = text.substring(0, maxLength); 
+            }
+        });
+    }
+
+
+    boton_guardar_cambios.addEventListener("click", function() {
+        nota_array[2] = titulo_nota.value;
+        nota_array[3] = contenido_nota.value;
+        nota_array[5] = cambiar_color.value;
+        array_notas[numero_nota] = nota_array;
+        guardar_en_local(array_notas);
+        mostrar_de_array(array_notas);`
+        `
+    })
 }
 
-
+}
 
 let array_notas = coger_de_local()
 console.log(array_notas)
@@ -411,4 +453,14 @@ function addArrayListener() {
 
         });
     });
+}
+
+function addmenuListener() {
+    let botones_menu = document.getElementsByClassName("button")
+    for (let boton of botones_menu){
+        boton.addEventListener("click", function(){
+            let numero_nota = boton.parentElement.id.replace("Nota", "")
+            abrir_menu(array_notas[numero_nota])
+        })
+    }
 }
