@@ -412,5 +412,3 @@ function addArrayListener() {
         });
     });
 }
-
-abrir_menu()
