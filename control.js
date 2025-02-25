@@ -172,10 +172,11 @@ function mostrar_de_array(array_notas){
             boton.textContent = titulo_contenido;
             boton.style.overflow = "hidden";
             boton.style.textOverflow = "ellipsis";
-            boton.style.whiteSpace = "nowrap";
+            boton.style.whiteSpace = "pre-wrap";
+            boton.style.wordWrap = "break-word";
             boton.style.width = "auto";
-            boton.style.maxWidth = "330px";
-            boton.style.height = "34px";
+            boton.style.maxWidth = "280px";
+            boton.style.height = "auto";
             boton.style.border = "none";
             boton.style.backgroundColor = "white"; // Color cálido para el botón
             boton.style.cursor = "pointer";
@@ -191,7 +192,7 @@ function mostrar_de_array(array_notas){
                 input_edicion.type = "text";
                 input_edicion.value = boton.textContent;
                 input_edicion.style.width = "auto";
-                input_edicion.style.maxWidth = "330px";
+                input_edicion.style.maxWidth = "280px";
                 input_edicion.style.height = "30px";
                 input_edicion.style.fontSize = "14px";
                 input_edicion.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
@@ -232,7 +233,7 @@ function mostrar_de_array(array_notas){
             let selector_colores = document.createElement("input"); //Crear input color
             selector_colores.type = "color";
             selector_colores.value = color_contenido;
-            selector_colores.style.width = "34px";
+            selector_colores.style.maxWidth = "34px";
             selector_colores.style.height = "34px";
             selector_colores.style.border = "none";
             selector_colores.style.padding = "0";
@@ -240,6 +241,14 @@ function mostrar_de_array(array_notas){
             selector_colores.style.marginLeft = "10px";
             selector_colores.style.backgroundColor = color_contenido;
             selector_colores.id = "Color"+ numero_nota;
+
+            let boton_menu = document.createElement("button");
+            boton_menu.textContent = "=";
+            boton_menu.className = "button";
+            boton_menu.style.borderColor = "black";
+            boton_menu.style.borderRadius = "5px";
+            boton_menu.style.backgroundColor = "#ffffff";
+            boton_menu.style.cursor = "pointer";
 
 
             let boton_eliminar = document.createElement("button");
@@ -270,7 +279,9 @@ function mostrar_de_array(array_notas){
             div_notas.appendChild(checkbox);
             div_notas.appendChild(boton);
             div_notas.appendChild(selector_colores);
+            div_notas.appendChild(boton_menu);
             div_notas.appendChild(boton_eliminar);
+            
 
             // Verificar si existe el contenedor de notas o crearlo
             let contenedor_notas = document.getElementById("contenedor_notas");

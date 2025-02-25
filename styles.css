@@ -89,6 +89,12 @@ h1{
 .menu a:hover {
     background-color: #f0f0f0;
 }
+.contenido{
+    white-space: pre-wrap;    /* Mantiene los saltos de línea */
+    word-wrap: break-word;    /* Rompe palabras largas */
+    overflow-wrap: break-word; /* Otra opción para evitar desbordamiento */
+    word-break: break-word;    /* Rompe las palabras largas */
+}
 
 .menu_pop_up{
     position: absolute;
