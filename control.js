@@ -1,6 +1,29 @@
 
-const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "fecha", "Hora completada"]
+const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
 
+
+function crear_nota(numero_nota, titulo, clase, color, array_notas){
+    let nueva_nota = [numero_nota, false, titulo, "", clase, color, Date.now(), ""]
+    array_notas.unshift(nueva_nota)
+    return array_notas
+}
+
+
+function ordenarTarjetas() {
+    let idOrdenar = document.getElementById("ordenar");
+    
+
+
+    if(idOrdenar.textContent === "ordenar por fecha"){
+        idOrdenar.textContent = "ordenar por otra cosa";
+
+    }
+    else{
+        idOrdenar.textContent = "ordenar por fecha";
+    }
+}
+
+document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
 
 //Obtener fecha actual
 function crearFechaYhora(){
@@ -27,47 +50,14 @@ function crearFechaYhora(){
     }
 }
 
-function crear_nota(numero_nota, titulo, clase, color, fechaCreada, array_notas){
-    let nueva_nota = [numero_nota, false, titulo, "", clase, color, fechaCreada, ""]
-    array_notas.unshift(nueva_nota)
-    return array_notas
-}
-
-
-/*function ordenarTarjetas(array_notas, checkbox) {
-    let idOrdenar = document.getElementById("ordenar");
-    
-    if(idOrdenar.textContent === "Ordenar tareas mas nuevas"){
-        idOrdenar.textContent = "Ordenar tareas mas antiguas";
-        return array_notas.sort((a,b) => new Date(a.checkbox.ahora) - new Date(b.checkbox.ahora));
-    }
-    else if(idOrdenar.textContent === "Ordenar tareas mas antiguas"){
-        idOrdenar.textContent = "Ordenar tareas completadas";
-        return array_notas.sort((a,b) => b.checkbox.ahora - a.checkbox.ahora);
-    }
-    else {
-        idOrdenar.textContent = "Ordenar tareas mas nuevas";
-    }
-}
-*/
-
-
-
-
 function guardar_en_local(array_notas){
     let numero_nota = 0;
-    //console.log(array_notas)
-
+    console.log(array_notas)
     for (let nota of array_notas){
         let texto = ""
         let numero = 0;
         for(let contenido of nota){
             console.log(contenido)
-
-            if (typeof contenido === 'object' && contenido !== null) {
-                // Convertir el objeto a una cadena de texto JSON
-                contenido = JSON.stringify(contenido);
-            }
             if (contenido == 0){
                 texto+= "0$/$"
             }
@@ -84,8 +74,8 @@ function guardar_en_local(array_notas){
             numero++
 
         }
-        console.log(texto);
-        localStorage.setItem(numero_nota, JSON.stringify(texto))
+
+        localStorage.setItem(numero_nota, texto)
         numero_nota++
     }
 }
@@ -94,37 +84,24 @@ function ordenar_array(array){
     let array_ordenat = []
     for(let i = array.length-1; i >= 0; i--){
         for (let j = 0; j < array.length; j++){
-         //   console.log(i.toString())
-           // console.log(array[j][1])
+            console.log(i.toString())
+            console.log(array[j][1])
             if(i.toString() == array[j][0]){
                 array_ordenat.push(array[j])
-              //  console.log(array[j])
+                console.log(array[j])
             }
         }
     }
     return array_ordenat;
 }
 
+
 function coger_de_local(){
     let array_actualitzado = []
-  
     for (let i = 0; i < localStorage.length; i++){
         let key = localStorage.key(i);
-        let value = JSON.parse(localStorage.getItem(key));
-        let array_nota = value.split("$/$");
-
-  
-        array_nota = array_nota.map(item => {
-            if (item.startsWith('{') && item.endsWith('}')) {
-                return JSON.parse(item);
-            } else if (item === "0") {
-                return 0;
-            } else if (item === "$/$") {
-                return "";
-            } else {
-                return item
-            }
-        });
+        let value = localStorage.getItem(key);
+        let array_nota = value.split("$/$")
         array_actualitzado.push(array_nota)
     }
     array_actualitzado = ordenar_array(array_actualitzado)
@@ -140,7 +117,6 @@ function mostrar_de_array(array_notas){
     //Coger valor de los inputs
     for(nota of array_notas){
         let titulo_contenido = nota[2];
-        let clase_contenido = nota[4];
         let color_contenido = nota[5];
     
 
@@ -151,8 +127,7 @@ function mostrar_de_array(array_notas){
             checkbox.className = "finalizado?";
             checkbox.style.width = "18px";
             checkbox.style.height = "18px";
-            checkbox.style.marginRight = "10px"; // Espacio entre checkbox y botón
-            checkbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
+            checkbox.style.marginRight = "10px"; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
 
             console.log(nota);
 
@@ -253,13 +228,14 @@ function mostrar_de_array(array_notas){
             boton.style.maxWidth = "330px";
             boton.style.height = "34px";
             boton.style.border = "none";
-            boton.style.backgroundColor = "#ffcc80"; // Color cálido para el botón
+            boton.style.backgroundColor = "white"; // Color cálido para el botón
             boton.style.cursor = "pointer";
             boton.style.borderRadius = "5px"; // Bordes redondeados
             boton.style.boxShadow = "1px 1px 3px rgba(0,0,0,0.2)"; // Sombra ligera
             boton.style.fontWeight = "bold";
             boton.style.color = "#333"; // Color de texto más oscuro
             boton.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
+            boton.style.flex = "flex-flow: wrap-reverse";
 
             boton.addEventListener("dblclick", function() {
                 let input_edicion = document.createElement("input");
@@ -313,33 +289,49 @@ function mostrar_de_array(array_notas){
             selector_colores.style.padding = "0";
             selector_colores.style.cursor = "pointer";
             selector_colores.style.marginLeft = "10px";
-            selector_colores.style.backgroundColor = "#ffcc80";// Espacio entre el botón y el selector
+            selector_colores.style.backgroundColor = color_contenido;
+            selector_colores.id = "Color"+ numero_nota;
+
+
+            let boton_eliminar = document.createElement("button");
+            boton_eliminar.textContent = "X";
+            boton_eliminar.style.marginLeft = "1px";
+            boton_eliminar.style.border = "none";
+            boton_eliminar.style.backgroundColor = "#ff4d4d"; // Rojo
+            boton_eliminar.style.color = "white";
+            boton_eliminar.style.cursor = "pointer";
+            boton_eliminar.style.padding = "5px 10px";
+            boton_eliminar.style.borderRadius = "5px";
+            boton_eliminar.style.fontSize = "14px";
 
             let div_notas = document.createElement("div"); //crear div de cada nota
             div_notas.style.display = "flex";
             div_notas.style.alignItems = "center"; // Alinear verticalmente
             div_notas.style.justifyContent = "space-between"; // Espacio entre elementos
-            div_notas.style.backgroundColor = "#ffcc80"; // Color amarillo claro
+            div_notas.style.backgroundColor = color_contenido; // Color amarillo claro
             div_notas.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.2)"; // Sombra para efecto elevado
             div_notas.style.width = "400px";
             div_notas.style.padding = "5px";
             div_notas.style.margin = "2px"; // Espaciado interno
             div_notas.style.borderRadius = "10px"; // Bordes más suaves
             div_notas.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
-            div_notas.style.borderLeft = "5px solid #ffcc80"; // Línea decorativa en el lado izquierdo
+            div_notas.style.borderLeft = color_contenido
 
             // Agregar elementos a la nota
             div_notas.appendChild(checkbox);
             div_notas.appendChild(boton);
             div_notas.appendChild(selector_colores);
+            div_notas.appendChild(boton_eliminar);
 
             // Verificar si existe el contenedor de notas o crearlo
             let contenedor_notas = document.getElementById("contenedor_notas");
             div_notas.id = "Nota"+numero_nota;
             contenedor_notas.appendChild(div_notas);
             numero_nota++;
+            inputs_de_color = document.querySelectorAll('input[type="color"]')
         }
     }
+    addArrayListener();
 }
 
 
@@ -364,7 +356,6 @@ let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
 
 
 mas_notas.addEventListener("click", function() { 
-    console.log("hola");
 
 
     //Coger valor de los inputs
@@ -384,6 +375,8 @@ mas_notas.addEventListener("click", function() {
         guardar_en_local(array_notas);
 
         mostrar_de_array(array_notas)
+        
+    
     }
     else{
         alert("Titulo de la nota sin contenido");
@@ -392,3 +385,20 @@ mas_notas.addEventListener("click", function() {
 
 
 });
+
+
+function addArrayListener() {
+    inputs_de_color.forEach((input) => {
+        input.addEventListener('change', (event) => {
+            if(input.id == "color_change"){}
+            else{      
+                let color = event.target.value;
+                let numero_del_div = input.id.replace("Color", "");
+                array_notas[parseInt(numero_del_div)][5] = color;
+                guardar_en_local(array_notas)
+                mostrar_de_array(array_notas)
+            }
+
+        });
+    });
+}
