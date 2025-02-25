@@ -296,6 +296,47 @@ function mostrar_de_array(array_notas){
 }
 
 
+function abrir_menu(button_id){
+    let div_menu = document.createElement("div"); //Creamos menu pop up
+    div_menu.classList.add("menu_pop_up");
+
+    let boton_cerrar = document.createElement("button"); //Creamos boton de cerrar
+    boton_cerrar.textContent = "✖";
+    boton_cerrar.className = "boton_cerrar"
+
+    let titulo_nota = document.createElement("button")
+    titulo_nota.textContent = "Titulo notakdjfñaeijfñdjfñaoiejfiajñpajefoijae"
+    titulo_nota.className = "titulo_nota"
+
+    let contenido_nota = document.createElement("textarea");
+    contenido_nota.textContent = "contenido notaaseijfpoiajefjaoijfpaejoifjaefjaoieofiajsepifioaeoifjapjf9aejfaoefjperaoifjapesjfiasoifja"
+    contenido_nota.className = "contenido_nota";
+
+    let checkbox = document.createElement("input"); //Crear checkbox
+    checkbox.type = "checkbox";
+    checkbox.className = "checkbox";
+
+    let boton_guardar_cambios = document.createElement("button");
+    boton_guardar_cambios.textContent = "Guardar cambios";
+    boton_guardar_cambios.className = "boton_guardar_cambios";
+
+    let cambiar_color = document.createElement("input");
+    cambiar_color.type = "color";
+    cambiar_color.value = "#ff0000";
+    cambiar_color.className = "cambiar_color";
+
+
+
+    document.body.appendChild(div_menu);
+    div_menu.appendChild(boton_cerrar);
+    div_menu.appendChild(titulo_nota);
+    div_menu.appendChild(contenido_nota);
+    div_menu.appendChild(checkbox);
+    div_menu.appendChild(boton_guardar_cambios);
+    div_menu.appendChild(cambiar_color);
+    
+}
+
 
 
 let array_notas = coger_de_local()
@@ -361,3 +402,5 @@ function addArrayListener() {
         });
     });
 }
+
+abrir_menu()
