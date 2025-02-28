@@ -13,7 +13,29 @@ let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
 
 
 
-
+function ordenar_funcio(array_notas){
+    if (ordenar == 0){ //ordenar por numero de nota
+        array_notas.sort((a,b) => b[0] - a[0])
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    } 
+    else if (ordenar == 1){ //ordenar por titulo
+        array_notas.sort((a,b) => a[2].localeCompare(b[2]))
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    }
+    else if(ordenar == 2){ //ordenar por color
+        array_notas.sort((a,b) => a[5].localeCompare(b[5]))
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    }
+    else if (ordenar == 3){ //ordenar por completadas
+        array_notas.sort((a,b) => a[1] - b[1])
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    }
+    return array_notas
+}
 
 function actualizarInputsDeColor() {
     inputs_de_color = document.querySelectorAll('input[type="color"]');
@@ -32,6 +54,7 @@ observer.observe(document.body, {
 function crear_nota(numero_nota, titulo, clase, color, array_notas){
     let nueva_nota = [numero_nota, false, titulo, "", clase, color, Date.now(), ""]
     array_notas.unshift(nueva_nota)
+    array_notas = ordenar_funcio(array_notas)
     return array_notas
 }
 
@@ -74,6 +97,7 @@ function crearFechaYhora(){
         segundos: segundos
     }
 }
+
 
 
 function guardar_en_local(array_notas){
@@ -511,28 +535,11 @@ array_notas.sort((a,b) => b[0] - a[0])
 guardar_en_local(array_notas)
 mostrar_de_array(array_notas)
 
+
+
 boton_ordenar.addEventListener("click", function() {
     ordenar = (ordenar+1)%3
-    if (ordenar == 0){ //ordenar por numero de nota
-        array_notas.sort((a,b) => b[0] - a[0])
-        guardar_en_local(array_notas)
-        mostrar_de_array(array_notas)
-    } 
-    else if (ordenar == 1){ //ordenar por titulo
-        array_notas.sort((a,b) => a[2].localeCompare(b[2]))
-        guardar_en_local(array_notas)
-        mostrar_de_array(array_notas)
-    }
-    else if(ordenar == 2){ //ordenar por color
-        array_notas.sort((a,b) => a[5].localeCompare(b[5]))
-        guardar_en_local(array_notas)
-        mostrar_de_array(array_notas)
-    }
-    else if (ordenar == 3){ //ordenar por completadas
-        array_notas.sort((a,b) => a[1] - b[1])
-        guardar_en_local(array_notas)
-        mostrar_de_array(array_notas)
-    }
-
+    ordenar_funcio(array_notas)
+    
 });
 
