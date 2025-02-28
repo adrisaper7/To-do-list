@@ -35,7 +35,7 @@ function ordenarTarjetas() {
 
 
     if(idOrdenar.textContent === "ordenar por fecha"){
-        idOrdenar.textContent = "ordenar por otra cosa";
+        idOrdenar.textContent = "ordenar por color";
 
     }
     else{
