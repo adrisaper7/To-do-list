@@ -489,7 +489,6 @@ document.addEventListener("click", function(event) {
     console.log("div menu", div_menu, "creando menu", creando_menu)
     if (div_menu !== null && creando_menu === true) {
         console.log("div_menu presente");
-        console.log(div_menu.contains(event.target))
         if (!div_menu.contains(event.target)) {
             console.log("Clic fuera del menú, cerrando...");
             div_menu.remove();
