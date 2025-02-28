@@ -8,6 +8,8 @@ const observer = new MutationObserver(actualizarInputsDeColor);
 let inputs_de_color = document.querySelectorAll('input[type="color"]');
 let div_menu = null
 let creando_menu = false
+const boton_ordenar = document.getElementById("ordenar")
+let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
 
 function actualizarInputsDeColor() {
     inputs_de_color = document.querySelectorAll('input[type="color"]');
@@ -499,3 +501,29 @@ document.addEventListener("click", function(event) {
         }
     }
 });
+
+boton_ordenar.addEventListener("click", function() {
+    ordenar = (ordenar+1)%3
+    if (ordenar == 0){ //ordenar por numero de nota
+        array_notas.sort((a,b) => b[0] - a[0])
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    } 
+    else if (ordenar == 1){ //ordenar por titulo
+        array_notas.sort((a,b) => a[2].localeCompare(b[2]))
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    }
+    else if(ordenar == 2){ //ordenar por color
+        array_notas.sort((a,b) => a[5].localeCompare(b[5]))
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    }
+    else if (ordenar == 3){ //ordenar por completadas
+        array_notas.sort((a,b) => a[1] - b[1])
+        guardar_en_local(array_notas)
+        mostrar_de_array(array_notas)
+    }
+
+});
+
