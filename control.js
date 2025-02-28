@@ -18,7 +18,7 @@ function ordenar_funcio(array_notas){
         array_notas.sort((a,b) => b[0] - a[0])
         guardar_en_local(array_notas)
         mostrar_de_array(array_notas)
-        boton_ordenar.textContent = "Creacion"
+        boton_ordenar.textContent = "Mas nueva"
     } 
     else if (ordenar == 1){ //ordenar por titulo
         array_notas.sort((a,b) => a[2].localeCompare(b[2]))
@@ -527,7 +527,7 @@ mostrar_de_array(array_notas)
 
 
 boton_ordenar.addEventListener("click", function() {
-    ordenar = (ordenar+1)%3
+    ordenar = (ordenar+1)%4
     ordenar_funcio(array_notas)
     
 });
