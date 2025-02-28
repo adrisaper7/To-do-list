@@ -1,3 +1,14 @@
+#tareas{
+    display: none;
+}
+
+#llistas{
+    display: block;
+}
+#listas_de_tareas{
+    display:flex;
+}
+
 p{
     font-family: "Comic Sans MS", cursive, sans-serif;
     font-size: 10px;

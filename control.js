@@ -12,6 +12,17 @@ const boton_ordenar = document.getElementById("ordenar")
 let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
 
 
+function mostrar_lista_de_llistas(){
+    let llistas_de_tareas = document.getElementById("listas_de_tareas")
+    for(let i = 0; i < localStorage.length; i++){
+        let boton_lista = document.createElement("button")
+        boton_lista.textContent = localStorage.key(i)
+        llistas_de_tareas.appendChild(boton_lista)
+    }
+}
+
+mostrar_lista_de_llistas()
+
 
 function ordenar_funcio(array_notas){
     if (ordenar == 0){ //ordenar por numero de nota
