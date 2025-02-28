@@ -249,7 +249,7 @@ function mostrar_de_array(array_notas){
             selector_colores.id = "Color"+ numero_nota;
 
             let boton_menu = document.createElement("button");
-            boton_menu.textContent = "=";
+            boton_menu.textContent = "≣";
             boton_menu.className = "button";
             boton_menu.style.borderColor = "black";
             boton_menu.style.borderRadius = "5px";
