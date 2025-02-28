@@ -58,21 +58,6 @@ function crear_nota(numero_nota, titulo, clase, color, array_notas){
     return array_notas
 }
 
-function ordenarTarjetas() {
-    let idOrdenar = document.getElementById("ordenar");
-    
-
-
-    if(idOrdenar.textContent === "ordenar por fecha"){
-        idOrdenar.textContent = "ordenar por color";
-
-    }
-    else{
-        idOrdenar.textContent = "ordenar por fecha";
-    }
-}
-
-document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
 
 //Obtener fecha actual
 function crearFechaYhora(){
