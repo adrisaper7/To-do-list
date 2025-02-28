@@ -6,6 +6,8 @@ const EJEMPLO_NOTAS = [
   ];
 const observer = new MutationObserver(actualizarInputsDeColor);
 let inputs_de_color = document.querySelectorAll('input[type="color"]');
+let div_menu = null
+let creando_menu = false
 
 function actualizarInputsDeColor() {
     inputs_de_color = document.querySelectorAll('input[type="color"]');
@@ -302,12 +304,19 @@ function mostrar_de_array(array_notas){
 
 
 function abrir_menu(nota_array){
+    creando_menu = false
     let numero_nota = array_notas.indexOf(nota_array)   
     let menu = document.getElementsByClassName("menu_pop_up")[0]
     if(menu){
+        div_menu = null
         menu.remove()
     }
-    else{let div_menu = document.createElement("div"); //Creamos menu pop up
+    else{
+
+    setTimeout(function() {
+        creando_menu = true
+    }, 30);
+    let div_menu = document.createElement("div"); //Creamos menu pop up
     div_menu.classList.add("menu_pop_up");
     div_menu.style.backgroundColor = nota_array[5]
 
@@ -383,10 +392,17 @@ function abrir_menu(nota_array){
         nota_array[3] = contenido_nota.value;
         nota_array[5] = cambiar_color.value;
         array_notas[numero_nota] = nota_array;
+        div_menu.style.backgroundColor = nota_array[5]
+        cambiar_color.style.backgroundColor =  nota_array[5];
         guardar_en_local(array_notas);
         mostrar_de_array(array_notas);`
+
+
+        
         `
     })
+
+    
 }
 
 }
@@ -464,3 +480,22 @@ function addmenuListener() {
         })
     }
 }
+
+document.addEventListener("click", function(event) {
+    console.log("click");
+    console.log("Elemento clickeado:", event.target);
+
+    div_menu = document.getElementsByClassName("menu_pop_up")[0]
+    console.log("div menu", div_menu, "creando menu", creando_menu)
+    if (div_menu !== null && creando_menu === true) {
+        console.log("div_menu presente");
+        console.log(div_menu.contains(event.target))
+        if (!div_menu.contains(event.target)) {
+            console.log("Clic fuera del menú, cerrando...");
+            div_menu.remove();
+            div_menu = null;
+        } else {
+            console.log("Clic dentro del menú");
+        }
+    }
+});
