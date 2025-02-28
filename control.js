@@ -18,21 +18,25 @@ function ordenar_funcio(array_notas){
         array_notas.sort((a,b) => b[0] - a[0])
         guardar_en_local(array_notas)
         mostrar_de_array(array_notas)
+        boton_ordenar.textContent = "Creacion"
     } 
     else if (ordenar == 1){ //ordenar por titulo
         array_notas.sort((a,b) => a[2].localeCompare(b[2]))
         guardar_en_local(array_notas)
         mostrar_de_array(array_notas)
+        boton_ordenar.textContent = "Alfabeticamente"
     }
     else if(ordenar == 2){ //ordenar por color
         array_notas.sort((a,b) => a[5].localeCompare(b[5]))
         guardar_en_local(array_notas)
         mostrar_de_array(array_notas)
+        boton_ordenar.textContent = "Color"
     }
     else if (ordenar == 3){ //ordenar por completadas
         array_notas.sort((a,b) => a[1] - b[1])
         guardar_en_local(array_notas)
         mostrar_de_array(array_notas)
+        boton_ordenar.textContent = "Completada"
     }
     return array_notas
 }
