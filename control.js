@@ -487,7 +487,7 @@ document.addEventListener("click", function(event) {
 
     div_menu = document.getElementsByClassName("menu_pop_up")[0]
     console.log("div menu", div_menu, "creando menu", creando_menu)
-    if (div_menu !== null && creando_menu === true) {
+    if (div_menu !== null && creando_menu === true && event.target != undefined) {
         console.log("div_menu presente");
         if (!div_menu.contains(event.target)) {
             console.log("Clic fuera del menú, cerrando...");
