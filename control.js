@@ -11,6 +11,10 @@ let creando_menu = false
 const boton_ordenar = document.getElementById("ordenar")
 let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
 
+
+
+
+
 function actualizarInputsDeColor() {
     inputs_de_color = document.querySelectorAll('input[type="color"]');
     console.log(inputs_de_color); // Muestra los inputs de color actualizados
@@ -501,6 +505,11 @@ document.addEventListener("click", function(event) {
         }
     }
 });
+
+//ordenarf por fecha cuando se inicia la pagina
+array_notas.sort((a,b) => b[0] - a[0])
+guardar_en_local(array_notas)
+mostrar_de_array(array_notas)
 
 boton_ordenar.addEventListener("click", function() {
     ordenar = (ordenar+1)%3
