@@ -224,7 +224,7 @@ function mostrar_de_array(array_notas){
                             diasH -= 1;
                         }
 
-                        let TiempoRealizacionTarea = {añoH, mesH, diasH, minutoH, segundoH};
+                        let TiempoRealizacionTarea = {añoH, mesH, diasH, horaH, minutoH, segundoH};
         
                         checkbox.TiempoRealizacionTarea = TiempoRealizacionTarea;
                         
