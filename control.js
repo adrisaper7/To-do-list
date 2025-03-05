@@ -10,10 +10,11 @@ let div_menu = null
 let creando_menu = false
 const boton_ordenar = document.getElementById("ordenar")
 let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
-let nombre_lista_actual = null;
 let array_notas = [];
 let last_id = coger_last_id()
 let numero_nota = last_id
+
+let nombre_lista_actual = null
 
 function mostrar_llista_de_tareas(){
     let div_tareas = document.getElementById("tareas")
@@ -46,7 +47,7 @@ function guardar_last_id(){
                     console.log("clicked")
                     let nombre_lista = element.textContent
                     array_notas = coger_de_local(nombre_lista)
-                    nombre_lista_actual = nombre_lista
+                    let nombre_lista_actual = nombre_lista
                     console.log("nombre_lista_actual", nombre_lista_actual)
                     mostrar_llista_de_tareas()
                     mostrar_de_array(array_notas)
@@ -184,7 +185,7 @@ function mostrar_de_array(array_notas){
             checkbox.style.width = "18px";
             checkbox.style.height = "18px";
             checkbox.style.marginRight = "10px";
-            checkbox.id = "Checkbox"+ numero_nota; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
+            checkbox.id = "Checkbox" + nota[0]; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
 
     
             let fechaYhoraCreacion = crearFechaYhora();
@@ -330,7 +331,7 @@ function mostrar_de_array(array_notas){
             selector_colores.style.cursor = "pointer";
             selector_colores.style.marginLeft = "10px";
             selector_colores.style.backgroundColor = color_contenido;
-            selector_colores.id = "Color"+ numero_nota;
+            selector_colores.id = "Color"+ nota[0];
 
             let boton_menu = document.createElement("button");
             boton_menu.textContent = "≣";
@@ -375,7 +376,7 @@ function mostrar_de_array(array_notas){
 
             // Verificar si existe el contenedor de notas o crearlo
             let contenedor_notas = document.getElementById("contenedor_notas");
-            div_notas.id = "Nota"+numero_nota;
+            div_notas.id = "NOTA" + nota[0];
             contenedor_notas.appendChild(div_notas);
             
             inputs_de_color = document.querySelectorAll('input[type="color"]')
@@ -543,8 +544,10 @@ function addArrayListener() {
             if(input.id == "color_change"){}
             else{      
                 let color = event.target.value;
-                let numero_del_div = input.id.replace("Color", "");
-                array_notas[parseInt(numero_del_div)][5] = color;
+                let numero_nota = input.id.replace("Color", "")
+                console.log(numero_nota)
+                let index = array_notas.findIndex(nota => nota[0] == numero_nota)
+                array_notas[index][5] = color;
                 guardar_en_local(array_notas)
                 mostrar_de_array(array_notas)
             }
@@ -557,8 +560,12 @@ function addmenuListener() {
     let botones_menu = document.getElementsByClassName("button")
     for (let boton of botones_menu){
         boton.addEventListener("click", function(){
-            let numero_nota = boton.parentElement.id.replace("Nota", "")
-            abrir_menu(array_notas[numero_nota])
+            console.log(array_notas)
+            let numero_nota = boton.parentElement.id.replace("NOTA", "")
+            console.log(numero_nota)
+            let index = array_notas.findIndex(nota => nota[0] == numero_nota)
+            console.log("index", index)
+            abrir_menu(array_notas[index])
         })
     }
 }
