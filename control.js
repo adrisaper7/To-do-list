@@ -13,8 +13,7 @@ let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
 let array_notas = [];
 let last_id = coger_last_id()
 let numero_nota = last_id
-
-let nombre_lista_actual = null
+let nombre_lista_actual = null;
 
 function mostrar_llista_de_tareas(){
     let div_tareas = document.getElementById("tareas")
@@ -47,7 +46,7 @@ function guardar_last_id(){
                     console.log("clicked")
                     let nombre_lista = element.textContent
                     array_notas = coger_de_local(nombre_lista)
-                    let nombre_lista_actual = nombre_lista
+                    nombre_lista_actual = nombre_lista
                     console.log("nombre_lista_actual", nombre_lista_actual)
                     mostrar_llista_de_tareas()
                     mostrar_de_array(array_notas)
@@ -64,7 +63,8 @@ function guardar_last_id(){
 function mostrar_lista_de_llistas(){
     let llistas_de_tareas = document.getElementById("listas_de_tareas")
     for(let i = 0; i < localStorage.length; i++){
-        if (localStorage.key(i) === "last_id" || localStorage.key(i) === "null"){
+        if (localStorage.key(i) === "last_id" || localStorage.key(i) === "null" || localStorage.key(i) === ""){
+            console.log("no hago nada")
         }
         else {
         let boton_lista = document.createElement("button")
@@ -157,7 +157,9 @@ function crearFechaYhora(){
 
 
 function guardar_en_local(array_notas){
+    if (nombre_lista_actual != null){
     localStorage.setItem(nombre_lista_actual, JSON.stringify(array_notas));
+    }
 }
 
 
