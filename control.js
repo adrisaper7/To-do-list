@@ -1,9 +1,23 @@
 
 const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
+const observer = new MutationObserver(actualizarInputsDeColor);
 
+let inputs_de_color = document.querySelectorAll('input[type="color"]');
+function actualizarInputsDeColor() {
+    //const inputs_de_color = document.querySelectorAll('input[type="color"]');
+    console.log(inputs_de_color); // Muestra los inputs de color actualizados
+}
 
-function crear_nota(numero_nota, titulo, clase, color, array_notas){
-    let nueva_nota = [numero_nota, false, titulo, "", clase, color, Date.now(), ""]
+// Inicializa MutationObserver para observar cambios en el DOM
+
+// Observa el body para cambios en los hijos (cuando se agregan o eliminan inputs)
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+
+function crear_nota(numero_nota, titulo, clase, color, fechaCreada, fechaFinalizacion, array_notas){
+    let nueva_nota = [numero_nota, false, titulo, "", clase, color, fechaCreada, fechaFinalizacion, ""]
     array_notas.unshift(nueva_nota)
     return array_notas
 }
@@ -39,6 +53,7 @@ function crearFechaYhora(){
     const minutos = Number(minuto);
     const segundo = String(ahora.getSeconds()).padStart(2, '0');
     const segundos = Number(segundo);
+
     return {
         ahora: ahora,
         dias: dias,
@@ -52,12 +67,17 @@ function crearFechaYhora(){
 
 function guardar_en_local(array_notas){
     let numero_nota = 0;
-    console.log(array_notas)
+    //console.log(array_notas)
     for (let nota of array_notas){
         let texto = ""
         let numero = 0;
         for(let contenido of nota){
             console.log(contenido)
+
+            if (typeof contenido === 'object' && contenido !== null) {
+                // Convertir el objeto a una cadena de texto JSON
+                contenido = JSON.stringify(contenido);
+            }
             if (contenido == 0){
                 texto+= "0$/$"
             }
@@ -75,7 +95,7 @@ function guardar_en_local(array_notas){
 
         }
 
-        localStorage.setItem(numero_nota, texto)
+        localStorage.setItem(numero_nota, JSON.stringify(texto));
         numero_nota++
     }
 }
@@ -84,11 +104,11 @@ function ordenar_array(array){
     let array_ordenat = []
     for(let i = array.length-1; i >= 0; i--){
         for (let j = 0; j < array.length; j++){
-            console.log(i.toString())
-            console.log(array[j][1])
+            //console.log(i.toString())
+            //console.log(array[j][1])
             if(i.toString() == array[j][0]){
                 array_ordenat.push(array[j])
-                console.log(array[j])
+              //  console.log(array[j])
             }
         }
     }
@@ -100,9 +120,21 @@ function coger_de_local(){
     let array_actualitzado = []
     for (let i = 0; i < localStorage.length; i++){
         let key = localStorage.key(i);
-        let value = localStorage.getItem(key);
+        let value = JSON.parse(localStorage.getItem(key));
         let array_nota = value.split("$/$")
+        array_nota = array_nota.map(item => {
+            if (item.startsWith('{') && item.endsWith('}')) {
+                return JSON.parse(item);
+            } else if (item === "0") {
+                return 0;
+            } else if (item === "$/$") {
+                return "";
+            } else {
+                return item
+            }
+        });
         array_actualitzado.push(array_nota)
+
     }
     array_actualitzado = ordenar_array(array_actualitzado)
 
@@ -120,10 +152,11 @@ function mostrar_de_array(array_notas){
         let color_contenido = nota[5];
     
 
-        if (titulo_contenido != ""){ 
+        if (titulo_contenido != "" && nota){ 
             
             let checkbox = document.createElement("input"); //Crear checkbox
             checkbox.type = "checkbox";
+            checkbox.id = "check" + numero_nota;
             checkbox.className = "finalizado?";
             checkbox.style.width = "18px";
             checkbox.style.height = "18px";
@@ -132,7 +165,7 @@ function mostrar_de_array(array_notas){
             console.log(nota);
 
             const fechaCreacion = nota.find(item => typeof item === 'object');
-            if (nota) {
+            
             const fechaCreada = fechaCreacion.ahora;
             const añoC = fechaCreacion.año;
             const mesC = fechaCreacion.meses;
@@ -145,12 +178,19 @@ function mostrar_de_array(array_notas){
         
             console.log("Creado en "+ añoC + "/" + mesC + "/" + diaC + " " + horaC + ":" + minutoC + ":" + segundosC);
             
-                function CalcularTiempo(){
+                checkbox.addEventListener("click", function (){
                      //let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
                     console.log(checkbox.checked);
+                    //const clicado = document.querySelector('input[type="checkbox"]:checked').value
+
                       if(checkbox.checked){
+                        
                           const fechaYhoraFinalizacion = crearFechaYhora();
-        
+                          
+                            //console.log(fechitaFind);
+
+                            //console.log("Introducido" + nota[7]);
+                            
                           let diaF = fechaYhoraFinalizacion.dias;
                           let mesF = fechaYhoraFinalizacion.meses;
                           let añoF = fechaYhoraFinalizacion.año;
@@ -163,17 +203,15 @@ function mostrar_de_array(array_notas){
                           console.log("Creado en "+ añoC + "/" + mesC + "/" + diaC + " " + horaC + ":" + minutoC + ":" + segundosC);
                           console.log("Finalizado en " + diaF + "/" + mesF + "/" + añoF + " " + horasF + ":" + minutosF + ":" + segundosF);
                           
-                        let diasH = diaF - diaC;
-                        let mesH = mesF - mesC;
-                        let añoH = añoF - añoC;
-        
-                        let horaH = horasF - horaC;
-                     
-                        let minutoH = minutosF - minutoC;
-                    
-                        let segundoH = segundosF - segundosC;
+                          let diasH = diaF - diaC;
+                          let mesH = mesF - mesC;
+                          let añoH = añoF - añoC;
 
-                        if (segundoH < 0) {
+                          let horaH = horasF - horaC;                     
+                          let minutoH = minutosF - minutoC;
+                          let segundoH = segundosF - segundosC;
+
+                         if (segundoH < 0) {
                             segundoH += 60;
                             minutoH -= 1;
                         }
@@ -184,14 +222,13 @@ function mostrar_de_array(array_notas){
                         if (horaH < 0) {
                             horaH += 24;
                             diasH -= 1;
-                        
-                    
                         }
-                        let TiempoRealizacionTarea = {diasH, mesH, añoH, horaH, minutoH, segundoH}
+
+                        let TiempoRealizacionTarea = {añoH, mesH, diasH, minutoH, segundoH};
         
                         checkbox.TiempoRealizacionTarea = TiempoRealizacionTarea;
                         
-        
+                        
                         if(checkbox.TiempoRealizacionTarea.minutoH == 0){
                             console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
                         }
@@ -199,26 +236,30 @@ function mostrar_de_array(array_notas){
                        else if(checkbox.TiempoRealizacionTarea.horaH == 0){
                             console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.minutoH + 
                                 " minutos y " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
-                        }
+                            }
         
                         else if(checkbox.TiempoRealizacionTarea.diasH == 0){
                             console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.horaH + " horas," + checkbox.TiempoRealizacionTarea.minutoH + 
                                 " minutos y " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
+                            }
+                      
+                        let check_id = parseInt(checkbox.id.replace("check", ""));
+                        let check_actual = array_notas.find(nota => nota[0] === check_id);
+                        if (check_actual) {
+                            check_actual[7] = JSON.stringify(checkbox.fechaYhoraFinalizada); // Actualiza el título en array_notas
                         }
-                          
-        
-                      }
-                      else{
-                          checkbox.fechaYhoraFinalizada = "";
-                      }
-                  }
-                }
-                checkbox.addEventListener("click", CalcularTiempo);
-
+                    }
+                    
+                    else{
+                        checkbox.fechaYhoraFinalizada = "";
+                    }
+        });
+              
+                //document.getElementById("check", numero_nota).addEventListener("click", CalcularTiempo);
                 
- //               document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
+                
+                document.getElementById("ordenar").addEventListener("click", ordenarTarjetas);
         
-
             let boton = document.createElement("button"); //Crear boton
             boton.textContent = titulo_contenido;
             boton.style.overflow = "hidden";
@@ -334,17 +375,10 @@ function mostrar_de_array(array_notas){
     addArrayListener();
 }
 
-
-
-
 let array_notas = coger_de_local()
 //console.log(array_notas)
 let numero_nota = array_notas.length;
 mostrar_de_array(array_notas)
-
-
-
-
 
 //Coger variables del documento
 let mas_notas = document.getElementById("mas_notas")
@@ -352,11 +386,9 @@ let contenedor_notas = document.getElementById("contenedor_notas")
 let titulo = document.getElementById("contenido");
 let clase = document.getElementById("ordenar")
 let color = document.getElementById("color_change")
-let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
-
+let checkbox = document.getElementById("check"+ numero_nota);
 
 mas_notas.addEventListener("click", function() { 
-
 
     //Coger valor de los inputs
 
@@ -364,28 +396,21 @@ mas_notas.addEventListener("click", function() {
     let clase_contenido = clase.value;
     let color_contenido = color.value;
     let fechaCreada = crearFechaYhora();
+    let fechaFinalizacion = "";
 
     if (titulo_contenido != ""){ 
-        
-
-        let = crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, fechaCreada, array_notas)
+        let = crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, fechaCreada, fechaFinalizacion, array_notas)
         numero_nota+= 1;
 
         console.log(array_notas);
         guardar_en_local(array_notas);
 
         mostrar_de_array(array_notas)
-        
-    
     }
     else{
         alert("Titulo de la nota sin contenido");
-
     }
-
-
 });
-
 
 function addArrayListener() {
     inputs_de_color.forEach((input) => {
@@ -400,5 +425,7 @@ function addArrayListener() {
             }
 
         });
+        
     });
+    
 }
