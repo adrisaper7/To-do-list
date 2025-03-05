@@ -10,16 +10,71 @@ let div_menu = null
 let creando_menu = false
 const boton_ordenar = document.getElementById("ordenar")
 let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
+let nombre_lista_actual = null;
+let array_notas = [];
+let last_id = coger_last_id()
+let numero_nota = last_id
 
+function mostrar_llista_de_tareas(){
+    let div_tareas = document.getElementById("tareas")
+    div_tareas.style.display = "block"
+    let div_llista = document.getElementById("llistas")
+    div_llista.style.display = "none"
+
+}
+function coger_last_id(){
+    let last_id = localStorage.getItem("last_id")
+    if (last_id){
+        return parseInt(last_id)
+    } else {
+        return 0
+    }
+}
+
+function guardar_last_id(){
+    localStorage.setItem("last_id", numero_nota)
+}
+
+    function leer_botones_tareas(){
+        let inputs_boton_lista = document.querySelectorAll('button.boton_lista');
+
+        if (inputs_boton_lista !=  null){
+            console.log(inputs_boton_lista)
+            inputs_boton_lista.forEach(element => {
+                console.log("hola")
+                element.addEventListener("click", function(){
+                    console.log("clicked")
+                    let nombre_lista = element.textContent
+                    array_notas = coger_de_local(nombre_lista)
+                    nombre_lista_actual = nombre_lista
+                    console.log("nombre_lista_actual", nombre_lista_actual)
+                    mostrar_llista_de_tareas()
+                    mostrar_de_array(array_notas)
+
+                }
+                
+                )
+        
+                
+            });
+        }
+    }
 
 function mostrar_lista_de_llistas(){
     let llistas_de_tareas = document.getElementById("listas_de_tareas")
     for(let i = 0; i < localStorage.length; i++){
+        if (localStorage.key(i) === "last_id" || localStorage.key(i) === "null"){
+        }
+        else {
         let boton_lista = document.createElement("button")
+        boton_lista.className = "boton_lista"
         boton_lista.textContent = localStorage.key(i)
         llistas_de_tareas.appendChild(boton_lista)
+        }
     }
+    leer_botones_tareas()
 }
+
 
 mostrar_lista_de_llistas()
 
@@ -101,12 +156,12 @@ function crearFechaYhora(){
 
 
 function guardar_en_local(array_notas){
-    localStorage.setItem('myArray', JSON.stringify(array_notas));
+    localStorage.setItem(nombre_lista_actual, JSON.stringify(array_notas));
 }
 
 
-function coger_de_local(){
-    let datosGuardados = localStorage.getItem('myArray'); 
+function coger_de_local(nombre_lista){
+    let datosGuardados = localStorage.getItem(nombre_lista); 
 
     if (datosGuardados) {
         return JSON.parse(datosGuardados);
@@ -116,8 +171,7 @@ function coger_de_local(){
 }
 
 function mostrar_de_array(array_notas){
-    document.getElementById("contenedor_notas").innerHTML = "";
-    let numero_nota = 0;
+    document.getElementById("contenedor_notas").innerHTML = "";;
     //Coger valor de los inputs
     for(nota of array_notas){
         let titulo_contenido = nota[2];
@@ -323,7 +377,7 @@ function mostrar_de_array(array_notas){
             let contenedor_notas = document.getElementById("contenedor_notas");
             div_notas.id = "Nota"+numero_nota;
             contenedor_notas.appendChild(div_notas);
-            numero_nota++;
+            
             inputs_de_color = document.querySelectorAll('input[type="color"]')
         }
     }
@@ -437,9 +491,7 @@ function abrir_menu(nota_array){
 
 }
 
-let array_notas = coger_de_local()
 console.log(array_notas)
-let numero_nota = array_notas.length;
 mostrar_de_array(array_notas)
 
 
@@ -465,9 +517,9 @@ mas_notas.addEventListener("click", function() {
     if (titulo_contenido != ""){ 
         
 
-        let = crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, array_notas)
-        numero_nota+= 1;
-
+        crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, array_notas)
+        numero_nota += 1
+        guardar_last_id()
 
         guardar_en_local(array_notas)
 
