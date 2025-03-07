@@ -141,7 +141,7 @@ function mostrar_lista_de_llistas(){
 }
 
 
-mostrar_lista_de_llistas()
+mostrar_lista_de_llistas() //Mostrar lista de tareas al iniciar la pagina
 
 
 function ordenar_funcio(array_notas){
@@ -667,4 +667,12 @@ boton_ordenar.addEventListener("click", function() {
     ordenar_funcio(array_notas)
     
 });
+let boton_atras = document.getElementById("atras")
 
+boton_atras.addEventListener("click", function(){
+    mostrar_lista_de_llistas()
+    let div_tareas = document.getElementById("tareas")
+    div_tareas.style.display = "none"
+    let div_llista = document.getElementById("llistas")
+    div_llista.style.display = "block"
+})
