@@ -33,15 +33,28 @@ function coger_last_id(){
     }
 }
 
+function es_el_titulo_utlizado(titulo){
+    for(let i = 0; i < localStorage.length; i++){
+        if (localStorage.key(i) === titulo){
+            return true
+        }
+    }
+    return false
+}
+
 function boton_llista_listener(){
     let mas_listas = document.getElementById("mas_listas")
     console.log("mas listas" + mas_listas)
     mas_listas.addEventListener("click", function(){
         let nombre_lista = document.getElementById("contenido_lista").value
+    
         if (nombre_lista != ""){
+            if(!es_el_titulo_utlizado(nombre_lista)){
             localStorage.setItem(nombre_lista, "")
-            console.log("contenido borrado")
-            mostrar_lista_de_llistas()
+            mostrar_lista_de_llistas()}
+            else {
+                alert("Nombre de la lista ya utilizado")
+            }
         }
         else {
             alert("Nombre de la lista sin contenido")
@@ -56,6 +69,7 @@ function guardar_last_id(){
     localStorage.setItem("last_id", numero_nota)
 }
 
+
     function leer_botones_tareas(){
         let inputs_boton_lista = document.querySelectorAll('button.boton_lista');
 
@@ -68,7 +82,8 @@ function guardar_last_id(){
                     let nombre_lista = girar_string(girar_string(element.textContent).replace("X", ""))
                     array_notas = coger_de_local(nombre_lista)
                     nombre_lista_actual = nombre_lista
-                    console.log("nombre_lista_actual", nombre_lista_actual)
+                    let titulo_lista_de_tareas = document.getElementById("titulo_lista_de_tareas")
+                    titulo_lista_de_tareas.textContent = nombre_lista
                     mostrar_llista_de_tareas()
                     mostrar_de_array(array_notas)
 
