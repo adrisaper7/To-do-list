@@ -14,6 +14,8 @@ let array_notas = [];
 let last_id = coger_last_id()
 let numero_nota = last_id
 let nombre_lista_actual = null;
+let contenido_lista = document.getElementById("contenido_lista")
+let nombre_lista = null
 
 
 function mostrar_llista_de_tareas(){
@@ -24,6 +26,13 @@ function mostrar_llista_de_tareas(){
     
 
 }
+
+
+contenido_lista.addEventListener("input", function(){
+    nombre_lista = contenido_lista.value
+    console.log("nombre lista: "+nombre_lista)
+})
+
 function coger_last_id(){
     let last_id = localStorage.getItem("last_id")
     if (last_id){
@@ -33,32 +42,34 @@ function coger_last_id(){
     }
 }
 
-function es_el_titulo_utlizado(titulo){
+function es_el_titulo_utlizado(){
     for(let i = 0; i < localStorage.length; i++){
-        if (localStorage.key(i) === titulo){
+        console.log("key", localStorage.key(i))
+        if (localStorage.key(i) === nombre_lista){
+            console.log("key found", nombre_lista)
             return true
         }
     }
+    console.log("key not found", nombre_lista)
     return false
 }
 
 function boton_llista_listener(){
     let mas_listas = document.getElementById("mas_listas")
-    console.log("mas listas" + mas_listas)
     mas_listas.addEventListener("click", function(){
-        let nombre_lista = document.getElementById("contenido_lista").value
-    
+
         if (nombre_lista != ""){
-            if(!es_el_titulo_utlizado(nombre_lista) ){
-            localStorage.setItem(nombre_lista, "")
-            mostrar_lista_de_llistas()
+            if (es_el_titulo_utlizado()){
+                alert("Nombre de la lista ya utilizado")
             }
             else if (nombre_lista == "last_id"){
                 alert("Nombre de la lista no permitido")
             }
             else {
-                alert("Nombre de la lista ya utilizado")
+                localStorage.setItem(nombre_lista, "")
+                mostrar_lista_de_llistas()
             }
+
         }
         else {
             alert("Nombre de la lista sin contenido")
@@ -137,12 +148,11 @@ function mostrar_lista_de_llistas(){
         }
     }
     leer_botones_tareas()
-    boton_llista_listener()
 }
 
 
 mostrar_lista_de_llistas() //Mostrar lista de tareas al iniciar la pagina
-
+boton_llista_listener() //Añadir listener al boton de lista
 
 function ordenar_funcio(array_notas){
     if (ordenar == 0){ //ordenar por numero de nota
@@ -675,4 +685,6 @@ boton_atras.addEventListener("click", function(){
     div_tareas.style.display = "none"
     let div_llista = document.getElementById("llistas")
     div_llista.style.display = "block"
+    boton_llista_listener()
 })
+
