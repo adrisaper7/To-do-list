@@ -208,8 +208,8 @@ observer.observe(document.body, {
     subtree: true
 });
 
-function crear_nota(numero_nota, titulo, clase, color, array_notas){
-    let nueva_nota = [numero_nota, false, titulo, "", clase, color, Date.now(), ""]
+function crear_nota(numero_nota, titulo, clase, color, fechaCreada, fechaFinalizacion, array_notas){
+    let nueva_nota = [numero_nota, false, titulo, "", clase, color, fechaCreada, fechaFinalizacion, ""]
     array_notas.unshift(nueva_nota)
     array_notas = ordenar_funcio(array_notas)
     return array_notas
@@ -259,12 +259,17 @@ function coger_de_local(nombre_lista){
     }
 }
 
+
+
 function mostrar_de_array(array_notas){
-    document.getElementById("contenedor_notas").innerHTML = "";;
+    document.getElementById("contenedor_notas").innerHTML = "";
     //Coger valor de los inputs
     for(nota of array_notas){
         let titulo_contenido = nota[2];
         let color_contenido = nota[5];
+        console.log(nota[7]);
+        
+     
 
         if (titulo_contenido != ""){ 
             let checkbox = document.createElement("input"); //Crear checkbox
@@ -274,7 +279,10 @@ function mostrar_de_array(array_notas){
             checkbox.style.height = "18px";
             checkbox.style.marginRight = "10px";
             checkbox.id = "Checkbox" + nota[0]; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
-
+            
+            if(nota[7]){
+                checkbox.checked = true;
+                }
     
             let fechaYhoraCreacion = crearFechaYhora();
         
@@ -290,62 +298,89 @@ function mostrar_de_array(array_notas){
         
                 console.log("Creado en "+ diaC + "/" + mesC + "/" + añoC + " " + horasC + ":" + minutosC + ":" + segundosC);
         
-                function CalcularTiempo(){
-                     //let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
-                    console.log(checkbox.checked);
-                      if(checkbox.checked){
-                          let fechaYhoraFinalizacion = crearFechaYhora();
-        
-                          let diaF = fechaYhoraFinalizacion.dias;
-                          let mesF = fechaYhoraFinalizacion.meses;
-                          let añoF = fechaYhoraFinalizacion.año;
-                      
-                          let horasF = fechaYhoraFinalizacion.horas;
-                          let minutosF = fechaYhoraFinalizacion.minutos;
-                          let segundosF = fechaYhoraFinalizacion.segundos;
-        
-                          checkbox.fechaYhoraFinalizada = fechaYhoraFinalizacion;
-        
-                          console.log("Finalizado en " + diaF + "/" + mesF + "/" + añoF + " " + horasF + ":" + minutosF + ":" + segundosF);
-                          
-                        let diasH = diaF - diaC;
-                        let mesH = mesF - mesC;
-                        let añoH = añoF - añoC;
-        
-                        let horaH = horasF - horasC;
-                        let minutoH = minutosF - minutosC;
-                        let segundoH = segundosF - segundosC;
-        
-                        let TiempoRealizacionTarea = {diasH, mesH, añoH, horaH, minutoH, segundoH}
-        
-                        checkbox.TiempoRealizacionTarea = TiempoRealizacionTarea;
-        
-                        if(checkbox.TiempoRealizacionTarea.minutoH == 0){
-                            console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
-                        }
-        
-                       else if(checkbox.TiempoRealizacionTarea.horaH == 0){
-                            console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.minutoH + 
-                                " minutos y " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
-                        }
-        
-                        else if(checkbox.TiempoRealizacionTarea.diasH == 0){
-                            console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.horaH + " horas," + checkbox.TiempoRealizacionTarea.minutoH + 
-                                " minutos y " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
-                        }
-                          
-        
-                      }
-                      else{
-                          checkbox.fechaYhoraFinalizada = "";
-                      }
-                  }
-             
-        
-                checkbox.addEventListener("click", CalcularTiempo);
+                checkbox.addEventListener("click", function (){
+                    //let checkbox = document.getElementById("TerminarTarea"+ numero_nota);
+                   console.log(checkbox.checked);
+                   //const clicado = document.querySelector('input[type="checkbox"]:checked').value
+
+                     if(checkbox.checked){
+                       
+                         const fechaYhoraFinalizacion = crearFechaYhora();
+                         
+                           //console.log(fechitaFind);
+
+                           //console.log("Introducido" + nota[7]);
+                           
+                         let diaF = fechaYhoraFinalizacion.dias;
+                         let mesF = fechaYhoraFinalizacion.meses;
+                         let añoF = fechaYhoraFinalizacion.año;
+                     
+                         let horasF = fechaYhoraFinalizacion.horas;
+                         let minutosF = fechaYhoraFinalizacion.minutos;
+                         let segundosF = fechaYhoraFinalizacion.segundos;
+       
+                         checkbox.fechaYhoraFinalizada = fechaYhoraFinalizacion;
+                         console.log("Creado en "+ añoC + "/" + mesC + "/" + diaC + " " + horasC + ":" + minutosC + ":" + segundosC);
+                         console.log("Finalizado en " + diaF + "/" + mesF + "/" + añoF + " " + horasF + ":" + minutosF + ":" + segundosF);
+                         
+                         let diasH = diaF - diaC;
+                         let mesH = mesF - mesC;
+                         let añoH = añoF - añoC;
+
+                         let horaH = horasF - horasC;                     
+                         let minutoH = minutosF - minutosC;
+                         let segundoH = segundosF - segundosC;
+
+                        if (segundoH < 0) {
+                           segundoH += 60;
+                           minutoH -= 1;
+                       }
+                       if (minutoH < 0) {
+                           minutoH += 60;
+                           horaH -= 1;
+                       }
+                       if (horaH < 0) {
+                           horaH += 24;
+                           diasH -= 1;
+                       }
+
+                       let TiempoRealizacionTarea = {añoH, mesH, diasH, horaH, minutoH, segundoH};
+       
+                       checkbox.TiempoRealizacionTarea = TiempoRealizacionTarea;
+                       
+                       
+                       if(checkbox.TiempoRealizacionTarea.minutoH == 0){
+                           console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
+                       }
+       
+                      else if(checkbox.TiempoRealizacionTarea.horaH == 0){
+                           console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.minutoH + 
+                               " minutos y " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
+                           }
+       
+                       else if(checkbox.TiempoRealizacionTarea.diasH == 0){
+                           console.log("Tarea realizada en " + checkbox.TiempoRealizacionTarea.horaH + " horas," + checkbox.TiempoRealizacionTarea.minutoH + 
+                               " minutos y " + checkbox.TiempoRealizacionTarea.segundoH + " segundos.");
+                           }
+                     console.log(checkbox.id);
+                           nota[7] = checkbox.fechaYhoraFinalizada;
+                           
+                           guardar_en_local(array_notas)
+                           mostrar_de_array(array_notas)
+                           
+                   }
+                   
+                   else{
+                      // checkbox.fechaYhoraFinalizada = "";
+                      console.log(checkbox.id);
+                       nota[7] = checkbox.fechaYhoraFinalizada = "";
+                       guardar_en_local(array_notas)
+                       mostrar_de_array(array_notas)
+                   }
+       });
 
                 
-        
+       
 
             let boton = document.createElement("button"); //Crear boton
             boton.textContent = titulo_contenido;
@@ -508,6 +543,8 @@ function abrir_menu(nota_array){
     let checkbox = document.createElement("input"); //Crear checkbox
     checkbox.type = "checkbox";
     checkbox.className = "checkbox";
+    checkbox.id = document.getElementById("Checkbox"+nota_array[0]);
+    
 
     let boton_guardar_cambios = document.createElement("button");
     boton_guardar_cambios.textContent = "Guardar cambios";
@@ -521,12 +558,35 @@ function abrir_menu(nota_array){
 
 
     let fechacreaciontarea = document.createElement("p")
-    fechacreaciontarea.textContent = "Fecha de creación de la tarea: 12/12/2021 12:12:12"
+    let añoC = nota_array[6].año;
+    let mesC = nota_array[6].meses;
+    let diaC = nota_array[6].dias;
+
+    let horaC = nota_array[6].horas;
+    let minutoC = nota_array[6].minutos;
+    let segundosC = nota_array[6].segundos;
+
+    fechacreaciontarea.textContent = "Fecha de creación: "+ diaC + "/"+ mesC + "/"+ añoC + " "+ horaC + ":" + minutoC + ":" + segundosC;
     fechacreaciontarea.className = "fechacreaciontarea"
 
     let fechacompletaciontarea = document.createElement("p")
-    fechacompletaciontarea.textContent = "Fecha de completación de la tarea : 12/12/2021 12:12:12"
+    
+    if(nota_array[7]){
+        let añoF = nota_array[7].año;
+        let mesF = nota_array[7].meses;
+        let diaF = nota_array[7].dias;
+
+        let horaF = nota_array[7].horas;
+        let minutoF = nota_array[7].minutos;
+        let segundosF = nota_array[7].segundos;
+    fechacompletaciontarea.textContent = "Fecha de finalizacion: "+ diaF + "/"+ mesF + "/"+ añoF + " "+ horaF + ":" + minutoF + ":" + segundosF;
     fechacompletaciontarea.className = "fechacompletaciontarea"
+    }
+    else{
+    fechacompletaciontarea.textContent = "Fecha de finalizacion: No completada";
+    fechacompletaciontarea.className = "fechacompletaciontarea"
+    }
+    
 
 
     document.body.appendChild(div_menu);
@@ -602,11 +662,13 @@ mas_notas.addEventListener("click", function() {
     let titulo_contenido = titulo.value;
     let clase_contenido = clase.value;
     let color_contenido = color.value;
+    let fechaCreada = crearFechaYhora();
+    let fechaFinalizacion = "";
 
     if (titulo_contenido != ""){ 
         
 
-        crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, array_notas)
+        crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, fechaCreada, fechaFinalizacion, array_notas)
         numero_nota += 1
         guardar_last_id()
 
