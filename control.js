@@ -685,6 +685,5 @@ boton_atras.addEventListener("click", function(){
     div_tareas.style.display = "none"
     let div_llista = document.getElementById("llistas")
     div_llista.style.display = "block"
-    boton_llista_listener()
 })
 
