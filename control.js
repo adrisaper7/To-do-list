@@ -1,4 +1,15 @@
-
+const colores_predeterminados = {
+    rosa_pastel: "#FFB6C1",      // Rosa pastel
+    azul_pastel: "#AEC6CF",      // Azul pastel
+    verde_pastel: "#77DD77",     // Verde pastel
+    amarillo_pastel: "#FFFF99",  // Amarillo pastel
+    lavanda: "#E6E6FA",          // Lavanda
+    menta: "#98FF98",            // Menta pastel
+    durazno: "#FFDAB9",          // Durazno pastel
+    lila: "#D8BFD8",             // Lila pastel
+    coral_pastel: "#FF9A8B",     // Coral pastel
+    melocoton: "#FFDAB9"         // Melocotón pastel
+};
 const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
 const EJEMPLO_NOTAS = [
     [1, true, "Reunión de equipo", "Se discutieron las metas de la próxima semana y la asignación de tareas.", "Trabajo", "#0000FF", "2025-02-25 10:00", "2025-02-25 11:00"],
@@ -119,12 +130,13 @@ function mostrar_lista_de_llistas(){
             console.log("no hago nada")
         }
         else {
-            
+        
+        numero_random = Math.floor(Math.random() * 10)
         let boton_lista = document.createElement("button")
         boton_lista.className = "boton_lista"
-
+        boton_lista.textContent = localStorage.key(i)
+        boton_lista.style.backgroundColor = colores_predeterminados[Object.keys(colores_predeterminados)[i%10]]
         let p_titulo_lista_de_tareas = document.createElement("p1")
-        p_titulo_lista_de_tareas.textContent = localStorage.key(i)
         p_titulo_lista_de_tareas.className = "titulo_lista_de_tareas"
         let boton_eliminar = document.createElement("button"); //Crear boton borrar
         boton_eliminar.textContent = "X";
