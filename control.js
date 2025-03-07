@@ -1,4 +1,15 @@
-
+const colores_predeterminados = {
+    rosa_pastel: "#FFB6C1",      // Rosa pastel
+    azul_pastel: "#AEC6CF",      // Azul pastel
+    verde_pastel: "#77DD77",     // Verde pastel
+    amarillo_pastel: "#FFFF99",  // Amarillo pastel
+    lavanda: "#E6E6FA",          // Lavanda
+    menta: "#98FF98",            // Menta pastel
+    durazno: "#FFDAB9",          // Durazno pastel
+    lila: "#D8BFD8",             // Lila pastel
+    coral_pastel: "#FF9A8B",     // Coral pastel
+    melocoton: "#FFDAB9"         // Melocotón pastel
+};
 const EJEMPLO_NOTA= ["numero_nota", "Completada", "titulo", "Contenido", "Classe", "Color", "Hora hecha", "Hora completada"]
 const EJEMPLO_NOTAS = [
     [1, true, "Reunión de equipo", "Se discutieron las metas de la próxima semana y la asignación de tareas.", "Trabajo", "#0000FF", "2025-02-25 10:00", "2025-02-25 11:00"],
@@ -14,6 +25,8 @@ let array_notas = [];
 let last_id = coger_last_id()
 let numero_nota = last_id
 let nombre_lista_actual = null;
+let contenido_lista = document.getElementById("contenido_lista")
+let nombre_lista = null
 
 
 function mostrar_llista_de_tareas(){
@@ -24,6 +37,13 @@ function mostrar_llista_de_tareas(){
     
 
 }
+
+
+contenido_lista.addEventListener("input", function(){
+    nombre_lista = contenido_lista.value
+    console.log("nombre lista: "+nombre_lista)
+})
+
 function coger_last_id(){
     let last_id = localStorage.getItem("last_id")
     if (last_id){
@@ -33,25 +53,48 @@ function coger_last_id(){
     }
 }
 
+function es_el_titulo_utlizado(){
+    for(let i = 0; i < localStorage.length; i++){
+        console.log("key", localStorage.key(i))
+        if (localStorage.key(i) === nombre_lista){
+            console.log("key found", nombre_lista)
+            return true
+        }
+    }
+    console.log("key not found", nombre_lista)
+    return false
+}
+
 function boton_llista_listener(){
     let mas_listas = document.getElementById("mas_listas")
-    console.log("mas listas" + mas_listas)
     mas_listas.addEventListener("click", function(){
-        let nombre_lista = document.getElementById("contenido_lista").value
+
         if (nombre_lista != ""){
-            localStorage.setItem(nombre_lista, "")
-            console.log("contenido borrado")
-            mostrar_lista_de_llistas()
+            if (es_el_titulo_utlizado()){
+                alert("Nombre de la lista ya utilizado")
+            }
+            else if (nombre_lista == "last_id"){
+                alert("Nombre de la lista no permitido")
+            }
+            else {
+                localStorage.setItem(nombre_lista, "")
+                mostrar_lista_de_llistas()
+            }
+
         }
         else {
             alert("Nombre de la lista sin contenido")
         }
     })
 }
-
+function girar_string(string){
+    return string.split("").reverse().join("")
+}
+    
 function guardar_last_id(){
     localStorage.setItem("last_id", numero_nota)
 }
+
 
     function leer_botones_tareas(){
         let inputs_boton_lista = document.querySelectorAll('button.boton_lista');
@@ -62,10 +105,11 @@ function guardar_last_id(){
                 console.log("hola")
                 element.addEventListener("click", function(){
                     console.log("clicked")
-                    let nombre_lista = element.textContent
+                    let nombre_lista = girar_string(girar_string(element.textContent).replace("X", ""))
                     array_notas = coger_de_local(nombre_lista)
                     nombre_lista_actual = nombre_lista
-                    console.log("nombre_lista_actual", nombre_lista_actual)
+                    let titulo_lista_de_tareas = document.getElementById("titulo_lista_de_tareas")
+                    titulo_lista_de_tareas.textContent = nombre_lista
                     mostrar_llista_de_tareas()
                     mostrar_de_array(array_notas)
 
@@ -86,12 +130,14 @@ function mostrar_lista_de_llistas(){
             console.log("no hago nada")
         }
         else {
-            
+        
+        numero_random = Math.floor(Math.random() * 10)
         let boton_lista = document.createElement("button")
         boton_lista.className = "boton_lista"
-        boton_lista.style.display = "block";
         boton_lista.textContent = localStorage.key(i)
-
+        boton_lista.style.backgroundColor = colores_predeterminados[Object.keys(colores_predeterminados)[i%10]]
+        let p_titulo_lista_de_tareas = document.createElement("p1")
+        p_titulo_lista_de_tareas.className = "titulo_lista_de_tareas"
         let boton_eliminar = document.createElement("button"); //Crear boton borrar
         boton_eliminar.textContent = "X";
         boton_eliminar.style.marginLeft = "1px";
@@ -103,23 +149,22 @@ function mostrar_lista_de_llistas(){
         boton_eliminar.style.borderRadius = "5px";
         boton_eliminar.style.fontSize = "14px";
         boton_eliminar.style.float = "right"
-        boton_eliminar.addEventListener("click", function(e){
-            e.stopPropagation()
+            boton_eliminar.addEventListener("click", function(e){
+                e.stopPropagation()
             localStorage.removeItem(localStorage.key(i))
             mostrar_lista_de_llistas()
         })
-        
         llistas_de_tareas.appendChild(boton_lista)
+        boton_lista.appendChild(p_titulo_lista_de_tareas)
         boton_lista.appendChild(boton_eliminar)
         }
     }
     leer_botones_tareas()
-    boton_llista_listener()
 }
 
 
-mostrar_lista_de_llistas()
-
+mostrar_lista_de_llistas() //Mostrar lista de tareas al iniciar la pagina
+boton_llista_listener() //Añadir listener al boton de lista
 
 function ordenar_funcio(array_notas){
     if (ordenar == 0){ //ordenar por numero de nota
@@ -706,4 +751,13 @@ boton_ordenar.addEventListener("click", function() {
     ordenar_funcio(array_notas)
     
 });
+let boton_atras = document.getElementById("atras")
+
+boton_atras.addEventListener("click", function(){
+    mostrar_lista_de_llistas()
+    let div_tareas = document.getElementById("tareas")
+    div_tareas.style.display = "none"
+    let div_llista = document.getElementById("llistas")
+    div_llista.style.display = "block"
+})
 

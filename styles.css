@@ -266,3 +266,8 @@ h1{
     visibility: hidden; /* El div no se ve pero su espacio sigue ahí */
   }
 
+#atras{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
