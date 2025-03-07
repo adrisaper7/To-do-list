@@ -10,8 +10,149 @@ let div_menu = null
 let creando_menu = false
 const boton_ordenar = document.getElementById("ordenar")
 let ordenar = 0 // 0 = fecha, 1 = titulo, 2 = color, 3 = completadas
+let array_notas = [];
+let last_id = coger_last_id()
+let numero_nota = last_id
+let nombre_lista_actual = null;
+let contenido_lista = document.getElementById("contenido_lista")
+let nombre_lista = null
 
 
+function mostrar_llista_de_tareas(){
+    let div_tareas = document.getElementById("tareas")
+    div_tareas.style.display = "block"
+    let div_llista = document.getElementById("llistas")
+    div_llista.style.display = "none"
+    
+
+}
+
+
+contenido_lista.addEventListener("input", function(){
+    nombre_lista = contenido_lista.value
+    console.log("nombre lista: "+nombre_lista)
+})
+
+function coger_last_id(){
+    let last_id = localStorage.getItem("last_id")
+    if (last_id){
+        return parseInt(last_id)
+    } else {
+        return 0
+    }
+}
+
+function es_el_titulo_utlizado(){
+    for(let i = 0; i < localStorage.length; i++){
+        console.log("key", localStorage.key(i))
+        if (localStorage.key(i) === nombre_lista){
+            console.log("key found", nombre_lista)
+            return true
+        }
+    }
+    console.log("key not found", nombre_lista)
+    return false
+}
+
+function boton_llista_listener(){
+    let mas_listas = document.getElementById("mas_listas")
+    mas_listas.addEventListener("click", function(){
+
+        if (nombre_lista != ""){
+            if (es_el_titulo_utlizado()){
+                alert("Nombre de la lista ya utilizado")
+            }
+            else if (nombre_lista == "last_id"){
+                alert("Nombre de la lista no permitido")
+            }
+            else {
+                localStorage.setItem(nombre_lista, "")
+                mostrar_lista_de_llistas()
+            }
+
+        }
+        else {
+            alert("Nombre de la lista sin contenido")
+        }
+    })
+}
+function girar_string(string){
+    return string.split("").reverse().join("")
+}
+    
+function guardar_last_id(){
+    localStorage.setItem("last_id", numero_nota)
+}
+
+
+    function leer_botones_tareas(){
+        let inputs_boton_lista = document.querySelectorAll('button.boton_lista');
+
+        if (inputs_boton_lista !=  null){
+            console.log(inputs_boton_lista)
+            inputs_boton_lista.forEach(element => {
+                console.log("hola")
+                element.addEventListener("click", function(){
+                    console.log("clicked")
+                    let nombre_lista = girar_string(girar_string(element.textContent).replace("X", ""))
+                    array_notas = coger_de_local(nombre_lista)
+                    nombre_lista_actual = nombre_lista
+                    let titulo_lista_de_tareas = document.getElementById("titulo_lista_de_tareas")
+                    titulo_lista_de_tareas.textContent = nombre_lista
+                    mostrar_llista_de_tareas()
+                    mostrar_de_array(array_notas)
+
+                }
+                
+                )
+        
+                
+            });
+        }
+    }
+
+function mostrar_lista_de_llistas(){
+    let llistas_de_tareas = document.getElementById("listas_de_tareas")
+    llistas_de_tareas.innerHTML = ""
+    for(let i = 0; i < localStorage.length; i++){
+        if (localStorage.key(i) === "last_id" || localStorage.key(i) === "null" || localStorage.key(i) === ""){
+            console.log("no hago nada")
+        }
+        else {
+            
+        let boton_lista = document.createElement("button")
+        boton_lista.className = "boton_lista"
+
+        let p_titulo_lista_de_tareas = document.createElement("p1")
+        p_titulo_lista_de_tareas.textContent = localStorage.key(i)
+        p_titulo_lista_de_tareas.className = "titulo_lista_de_tareas"
+        let boton_eliminar = document.createElement("button"); //Crear boton borrar
+        boton_eliminar.textContent = "X";
+        boton_eliminar.style.marginLeft = "1px";
+        boton_eliminar.style.border = "none";
+        boton_eliminar.style.backgroundColor = "#ff4d4d";
+        boton_eliminar.style.color = "white";
+        boton_eliminar.style.cursor = "pointer";
+        boton_eliminar.style.padding = "5px 10px";
+        boton_eliminar.style.borderRadius = "5px";
+        boton_eliminar.style.fontSize = "14px";
+        boton_eliminar.style.float = "right"
+            boton_eliminar.addEventListener("click", function(e){
+                e.stopPropagation()
+            localStorage.removeItem(localStorage.key(i))
+            mostrar_lista_de_llistas()
+        })
+        llistas_de_tareas.appendChild(boton_lista)
+        boton_lista.appendChild(p_titulo_lista_de_tareas)
+        boton_lista.appendChild(boton_eliminar)
+        }
+    }
+    leer_botones_tareas()
+}
+
+
+mostrar_lista_de_llistas() //Mostrar lista de tareas al iniciar la pagina
+boton_llista_listener() //Añadir listener al boton de lista
 
 function ordenar_funcio(array_notas){
     if (ordenar == 0){ //ordenar por numero de nota
@@ -90,12 +231,14 @@ function crearFechaYhora(){
 
 
 function guardar_en_local(array_notas){
-    localStorage.setItem('myArray', JSON.stringify(array_notas));
+    if (nombre_lista_actual != null){
+    localStorage.setItem(nombre_lista_actual, JSON.stringify(array_notas));
+    }
 }
 
 
-function coger_de_local(){
-    let datosGuardados = localStorage.getItem('myArray'); 
+function coger_de_local(nombre_lista){
+    let datosGuardados = localStorage.getItem(nombre_lista); 
 
     if (datosGuardados) {
         return JSON.parse(datosGuardados);
@@ -105,8 +248,7 @@ function coger_de_local(){
 }
 
 function mostrar_de_array(array_notas){
-    document.getElementById("contenedor_notas").innerHTML = "";
-    let numero_nota = 0;
+    document.getElementById("contenedor_notas").innerHTML = "";;
     //Coger valor de los inputs
     for(nota of array_notas){
         let titulo_contenido = nota[2];
@@ -119,7 +261,7 @@ function mostrar_de_array(array_notas){
             checkbox.style.width = "18px";
             checkbox.style.height = "18px";
             checkbox.style.marginRight = "10px";
-            checkbox.id = "Checkbox"+ numero_nota; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
+            checkbox.id = "Checkbox" + nota[0]; // Espacio entre checkbox y botóncheckbox.id = "TerminarTarea"+ numero_nota; // id del boton terminar tarea
 
     
             let fechaYhoraCreacion = crearFechaYhora();
@@ -265,7 +407,7 @@ function mostrar_de_array(array_notas){
             selector_colores.style.cursor = "pointer";
             selector_colores.style.marginLeft = "10px";
             selector_colores.style.backgroundColor = color_contenido;
-            selector_colores.id = "Color"+ numero_nota;
+            selector_colores.id = "Color"+ nota[0];
 
             let boton_menu = document.createElement("button");
             boton_menu.textContent = "≣";
@@ -310,9 +452,9 @@ function mostrar_de_array(array_notas){
 
             // Verificar si existe el contenedor de notas o crearlo
             let contenedor_notas = document.getElementById("contenedor_notas");
-            div_notas.id = "Nota"+numero_nota;
+            div_notas.id = "NOTA" + nota[0];
             contenedor_notas.appendChild(div_notas);
-            numero_nota++;
+            
             inputs_de_color = document.querySelectorAll('input[type="color"]')
         }
     }
@@ -426,9 +568,7 @@ function abrir_menu(nota_array){
 
 }
 
-let array_notas = coger_de_local()
 console.log(array_notas)
-let numero_nota = array_notas.length;
 mostrar_de_array(array_notas)
 
 
@@ -454,9 +594,9 @@ mas_notas.addEventListener("click", function() {
     if (titulo_contenido != ""){ 
         
 
-        let = crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, array_notas)
-        numero_nota+= 1;
-
+        crear_nota(numero_nota, titulo_contenido, clase_contenido, color_contenido, array_notas)
+        numero_nota += 1
+        guardar_last_id()
 
         guardar_en_local(array_notas)
 
@@ -480,8 +620,10 @@ function addArrayListener() {
             if(input.id == "color_change"){}
             else{      
                 let color = event.target.value;
-                let numero_del_div = input.id.replace("Color", "");
-                array_notas[parseInt(numero_del_div)][5] = color;
+                let numero_nota = input.id.replace("Color", "")
+                console.log(numero_nota)
+                let index = array_notas.findIndex(nota => nota[0] == numero_nota)
+                array_notas[index][5] = color;
                 guardar_en_local(array_notas)
                 mostrar_de_array(array_notas)
             }
@@ -494,8 +636,12 @@ function addmenuListener() {
     let botones_menu = document.getElementsByClassName("button")
     for (let boton of botones_menu){
         boton.addEventListener("click", function(){
-            let numero_nota = boton.parentElement.id.replace("Nota", "")
-            abrir_menu(array_notas[numero_nota])
+            console.log(array_notas)
+            let numero_nota = boton.parentElement.id.replace("NOTA", "")
+            console.log(numero_nota)
+            let index = array_notas.findIndex(nota => nota[0] == numero_nota)
+            console.log("index", index)
+            abrir_menu(array_notas[index])
         })
     }
 }
@@ -531,4 +677,13 @@ boton_ordenar.addEventListener("click", function() {
     ordenar_funcio(array_notas)
     
 });
+let boton_atras = document.getElementById("atras")
+
+boton_atras.addEventListener("click", function(){
+    mostrar_lista_de_llistas()
+    let div_tareas = document.getElementById("tareas")
+    div_tareas.style.display = "none"
+    let div_llista = document.getElementById("llistas")
+    div_llista.style.display = "block"
+})
 

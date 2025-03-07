@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1 style="text-align: center;">Lista de tareas</h1>
+        <div id = tareas><button id="atras" class = "erik">Ir atras</button><h1 style="text-align: center;" id = "titulo_lista_de_tareas">Lista de tareas</h1>
         <div id="crear_notas" style="display: flex; align-items: center; justify-content: center;">
             <button id="mas_notas" class="erik">+</button>
             <input id="contenido" class="erik"type="text" placeholder="Escribe tus notas" style="font-family: Comic Sans MS, cursive, sans-serif;"></input>
@@ -16,7 +16,18 @@
             <input id="color_change" type="color"></input>
         </div>
         <div id="contenedor_notas" style="display: flex; align-items: center; justify-content: center; flex-direction: column;" ></div>
+        </div>
 
+        <div id = "llistas">
+            <h1 style="text-align: center;">Mis listas de tareas</h1>
+            <div id="crear_listas" style="display: flex; align-items: center; justify-content: center;">
+                <button id="mas_listas" class="erik">+</button>
+                <input id="contenido_lista" class="erik"type="text" placeholder="Escribe la nueva lista: " style="font-family: Comic Sans MS, cursive, sans-serif;"></input>
+            </div>
+            <div id="listas_de_tareas">
+            </div>
+
+        </div>
         <script src="control.js" ></script>
         
     </body>
