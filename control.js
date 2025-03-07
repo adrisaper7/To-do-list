@@ -15,11 +15,13 @@ let last_id = coger_last_id()
 let numero_nota = last_id
 let nombre_lista_actual = null;
 
+
 function mostrar_llista_de_tareas(){
     let div_tareas = document.getElementById("tareas")
     div_tareas.style.display = "block"
     let div_llista = document.getElementById("llistas")
     div_llista.style.display = "none"
+    
 
 }
 function coger_last_id(){
@@ -29,6 +31,22 @@ function coger_last_id(){
     } else {
         return 0
     }
+}
+
+function boton_llista_listener(){
+    let mas_listas = document.getElementById("mas_listas")
+    console.log("mas listas" + mas_listas)
+    mas_listas.addEventListener("click", function(){
+        let nombre_lista = document.getElementById("contenido_lista").value
+        if (nombre_lista != ""){
+            localStorage.setItem(nombre_lista, "")
+            console.log("contenido borrado")
+            mostrar_lista_de_llistas()
+        }
+        else {
+            alert("Nombre de la lista sin contenido")
+        }
+    })
 }
 
 function guardar_last_id(){
@@ -62,18 +80,41 @@ function guardar_last_id(){
 
 function mostrar_lista_de_llistas(){
     let llistas_de_tareas = document.getElementById("listas_de_tareas")
+    llistas_de_tareas.innerHTML = ""
     for(let i = 0; i < localStorage.length; i++){
         if (localStorage.key(i) === "last_id" || localStorage.key(i) === "null" || localStorage.key(i) === ""){
             console.log("no hago nada")
         }
         else {
+            
         let boton_lista = document.createElement("button")
         boton_lista.className = "boton_lista"
+        boton_lista.style.display = "block";
         boton_lista.textContent = localStorage.key(i)
+
+        let boton_eliminar = document.createElement("button"); //Crear boton borrar
+        boton_eliminar.textContent = "X";
+        boton_eliminar.style.marginLeft = "1px";
+        boton_eliminar.style.border = "none";
+        boton_eliminar.style.backgroundColor = "#ff4d4d";
+        boton_eliminar.style.color = "white";
+        boton_eliminar.style.cursor = "pointer";
+        boton_eliminar.style.padding = "5px 10px";
+        boton_eliminar.style.borderRadius = "5px";
+        boton_eliminar.style.fontSize = "14px";
+        boton_eliminar.style.float = "right"
+        boton_eliminar.addEventListener("click", function(e){
+            e.stopPropagation()
+            localStorage.removeItem(localStorage.key(i))
+            mostrar_lista_de_llistas()
+        })
+        
         llistas_de_tareas.appendChild(boton_lista)
+        boton_lista.appendChild(boton_eliminar)
         }
     }
     leer_botones_tareas()
+    boton_llista_listener()
 }
 
 
