@@ -49,9 +49,13 @@ function boton_llista_listener(){
         let nombre_lista = document.getElementById("contenido_lista").value
     
         if (nombre_lista != ""){
-            if(!es_el_titulo_utlizado(nombre_lista)){
+            if(!es_el_titulo_utlizado(nombre_lista) ){
             localStorage.setItem(nombre_lista, "")
-            mostrar_lista_de_llistas()}
+            mostrar_lista_de_llistas()
+            }
+            else if (nombre_lista == "last_id"){
+                alert("Nombre de la lista no permitido")
+            }
             else {
                 alert("Nombre de la lista ya utilizado")
             }
