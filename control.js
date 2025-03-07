@@ -48,7 +48,10 @@ function boton_llista_listener(){
         }
     })
 }
-
+function girar_string(string){
+    return string.split("").reverse().join("")
+}
+    
 function guardar_last_id(){
     localStorage.setItem("last_id", numero_nota)
 }
@@ -62,7 +65,7 @@ function guardar_last_id(){
                 console.log("hola")
                 element.addEventListener("click", function(){
                     console.log("clicked")
-                    let nombre_lista = element.textContent
+                    let nombre_lista = girar_string(girar_string(element.textContent).replace("X", ""))
                     array_notas = coger_de_local(nombre_lista)
                     nombre_lista_actual = nombre_lista
                     console.log("nombre_lista_actual", nombre_lista_actual)
@@ -89,9 +92,10 @@ function mostrar_lista_de_llistas(){
             
         let boton_lista = document.createElement("button")
         boton_lista.className = "boton_lista"
-        boton_lista.style.display = "block";
-        boton_lista.textContent = localStorage.key(i)
 
+        let p_titulo_lista_de_tareas = document.createElement("p1")
+        p_titulo_lista_de_tareas.textContent = localStorage.key(i)
+        p_titulo_lista_de_tareas.className = "titulo_lista_de_tareas"
         let boton_eliminar = document.createElement("button"); //Crear boton borrar
         boton_eliminar.textContent = "X";
         boton_eliminar.style.marginLeft = "1px";
@@ -103,13 +107,13 @@ function mostrar_lista_de_llistas(){
         boton_eliminar.style.borderRadius = "5px";
         boton_eliminar.style.fontSize = "14px";
         boton_eliminar.style.float = "right"
-        boton_eliminar.addEventListener("click", function(e){
-            e.stopPropagation()
+            boton_eliminar.addEventListener("click", function(e){
+                e.stopPropagation()
             localStorage.removeItem(localStorage.key(i))
             mostrar_lista_de_llistas()
         })
-        
         llistas_de_tareas.appendChild(boton_lista)
+        boton_lista.appendChild(p_titulo_lista_de_tareas)
         boton_lista.appendChild(boton_eliminar)
         }
     }
